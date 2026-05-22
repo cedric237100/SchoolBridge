@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: schoolbridge-config
+data:
+  DB_HOST: "mysql-service"
+  DB_NAME: "schoolbridge"
+  DB_USER: "schooluser"
+  NODE_ENV: "production"
+  PORT: "5000"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: schoolbridge-secrets
+type: Opaque
+data:
+  DB_PASSWORD: "c2Nob29scGFzc3dvcmQ=" # schoolpassword in base64
+  JWT_SECRET: "c3VwZXJfc2VjcmV0X2tleV8xMjM=" # super_secret_key_123 in base64
