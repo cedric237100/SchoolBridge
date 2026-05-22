@@ -55,4 +55,4 @@ jobs:
       with:
         context: ./backend
         push: true
-        tags: marco-paul237/schoolbridge-backend:latest
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/schoolbridge-backend:latest
