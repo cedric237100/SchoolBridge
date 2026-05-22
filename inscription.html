@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SchoolBridge — Inscription Répétiteur</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green: #1a7a4a; --green2: #25a165; --red: #ce1126; --yellow: #f6c90e;
+      --bg: #f7f5f0; --dark: #111810; --muted: #6b7160; --card: #ffffff; --border: #e4e0d8;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--dark); font-family: 'Plus Jakarta Sans', sans-serif; min-height: 100vh; }
+
+```
+nav {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.2rem 5vw; background: var(--card); border-bottom: 1px solid var(--border);
+}
+.logo { font-family: 'Playfair Display', serif; font-weight: 800; font-size: 1.3rem; text-decoration: none; color: var(--dark); }
+.logo span { color: var(--green); }
+
+.page-wrap {
+  max-width: 760px; margin: 0 auto; padding: 3rem 5vw 5rem;
+}
+
+.page-header { text-align: center; margin-bottom: 3rem; }
+.page-badge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: rgba(26,122,74,0.1); border: 1px solid rgba(26,122,74,0.25);
+  color: var(--green); font-size: 0.75rem; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 0.4rem 1rem; border-radius: 100px; margin-bottom: 1rem;
+}
+.page-title {
+  font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-weight: 800; margin-bottom: 0.6rem; letter-spacing: -0.02em;
+}
+.page-sub { color: var(--muted); font-size: 0.95rem; }
+
+/* Steps */
+.steps-bar {
+  display: flex; align-items: center; justify-content: center;
+  gap: 0; margin-bottom: 3rem;
+}
+.step-item { display: flex; align-items: center; gap: 0.5rem; }
+.step-circle {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; font-weight: 700; border: 2px solid var(--border);
+  background: var(--card); color: var(--muted); transition: all 0.3s;
+}
+.step-circle.active { background: var(--green); border-color: var(--green); color: #fff; }
+.step-circle.done { background: var(--green2); border-color: var(--green2); color: #fff; }
+.step-label { font-size: 0.75rem; font-weight: 500; color: var(--muted); }
+.step-label.active { color: var(--green); font-weight: 600; }
+.step-line { width: 50px; height: 2px; background: var(--border); margin: 0 0.5rem; }
+.step-line.done { background: var(--green2); }
+
+/* Form card */
+.form-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 16px; padding: 2.5rem; margin-bottom: 1.5rem;
+}
+.card-title {
+  font-family: 'Playfair Display', serif; font-size: 1.2rem;
+  font-weight: 700; margin-bottom: 0.3rem;
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.card-title .icon { font-size: 1.3rem; }
+.card-sub { color: var(--muted); font-size: 0.85rem; margin-bottom: 2rem; }
+
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+.form-grid.full { grid-template-columns: 1fr; }
+
+.field { display: flex; flex-direction: column; gap: 0.4rem; }
+.field.span2 { grid-column: span 2; }
+
+label { font-size: 0.82rem; font-weight: 600; color: var(--dark); }
+label .req { color: var(--red); margin-left: 2px; }
+
+input, select, textarea {
+  padding: 0.75rem 1rem; border: 1.5px solid var(--border); border-radius: 8px;
+  font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.9rem;
+  background: var(--bg); color: var(--dark); transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none; width: 100%;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--green); box-shadow: 0 0 0 3px rgba(26,122,74,0.1);
+}
+textarea { resize: vertical; min-height: 90px; }
+
+/* Photo upload */
+.photo-upload {
+  border: 2px dashed var(--border); border-radius: 12px;
+  padding: 2rem; text-align: center; cursor: pointer;
+  transition: all 0.2s; background: var(--bg);
+}
+.photo-upload:hover { border-color: var(--green); background: rgba(26,122,74,0.03); }
+.photo-upload .icon { font-size: 2rem; margin-bottom: 0.5rem; }
+.photo-upload p { font-size: 0.85rem; color: var(--muted); }
+.photo-upload span { color: var(--green); font-weight: 600; }
+
+/* Checkboxes matières */
+.checkbox-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
+.check-item {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.6rem 0.8rem; border: 1.5px solid var(--border);
+  border-radius: 8px; cursor: pointer; transition: all 0.2s;
+  font-size: 0.82rem; font-weight: 500;
+}
+.check-item:has(input:checked) { border-color: var(--green); background: rgba(26,122,74,0.06); color: var(--green); }
+.check-item input { display: none; }
+
+/* Niveaux */
+.level-grid { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+.level-btn {
+  padding: 0.5rem 1.2rem; border: 1.5px solid var(--border);
+  border-radius: 100px; cursor: pointer; font-size: 0.82rem;
+  font-weight: 500; background: var(--card); color: var(--muted);
+  transition: all 0.2s;
+}
+.level-btn:has(input:checked) { border-color: var(--green); background: var(--green); color: #fff; }
+.level-btn input { display: none; }
+
+/* CV Upload */
+.cv-upload {
+  border: 2px dashed var(--border); border-radius: 12px;
+  padding: 1.5rem 2rem; display: flex; align-items: center;
+  gap: 1rem; cursor: pointer; transition: all 0.2s;
+}
+.cv-upload:hover { border-color: var(--green); background: rgba(26,122,74,0.03); }
+.cv-icon { font-size: 2rem; flex-shrink: 0; }
+.cv-text p { font-size: 0.85rem; color: var(--muted); }
+.cv-text strong { color: var(--dark); font-size: 0.9rem; }
+.cv-text span { color: var(--green); font-weight: 600; }
+
+/* Password */
+.pwd-wrap { position: relative; }
+.pwd-wrap input { padding-right: 3rem; }
+.pwd-toggle {
+  position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);
+  cursor: pointer; color: var(--muted); font-size: 1.1rem; user-select: none;
+}
+
+/* Disponibilités */
+.dispo-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.4rem; }
+.day-btn {
+  padding: 0.5rem 0; border: 1.5px solid var(--border);
+  border-radius: 8px; cursor: pointer; font-size: 0.75rem;
+  font-weight: 600; background: var(--card); color: var(--muted);
+  text-align: center; transition: all 0.2s;
+}
+.day-btn:has(input:checked) { border-color: var(--green); background: var(--green); color: #fff; }
+.day-btn input { display: none; }
+
+/* Submit */
+.submit-wrap { text-align: center; margin-top: 2rem; }
+.btn-submit {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  padding: 1rem 3rem; background: var(--green); color: #fff;
+  border: none; border-radius: 100px; font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1rem; font-weight: 600; cursor: pointer;
+  transition: all 0.22s; box-shadow: 0 4px 20px rgba(26,122,74,0.3);
+}
+.btn-submit:hover { background: var(--green2); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(26,122,74,0.4); }
+.login-link { margin-top: 1rem; font-size: 0.85rem; color: var(--muted); }
+.login-link a { color: var(--green); font-weight: 600; text-decoration: none; }
+
+@media (max-width: 600px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .field.span2 { grid-column: span 1; }
+  .checkbox-grid { grid-template-columns: repeat(2, 1fr); }
+  .dispo-grid { grid-template-columns: repeat(4, 1fr); }
+}
+```
+
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">School<span>Bridge</span></a>
+  <span style="font-size:0.85rem;color:var(--muted)">Déjà inscrit ? <a href="#" style="color:var(--green);font-weight:600;text-decoration:none">Se connecter</a></span>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="page-header">
+    <div class="page-badge">👨‍🏫 Répétiteur</div>
+    <h1 class="page-title">Créer mon profil</h1>
+    <p class="page-sub">Rejoignez des milliers de répétiteurs et trouvez des élèves au Cameroun</p>
+  </div>
+
+  <!-- Steps -->
+
+  <div class="steps-bar">
+    <div class="step-item">
+      <div class="step-circle active">1</div>
+      <div class="step-label active">Profil</div>
+    </div>
+    <div class="step-line"></div>
+    <div class="step-item">
+      <div class="step-circle">2</div>
+      <div class="step-label">Compétences</div>
+    </div>
+    <div class="step-line"></div>
+    <div class="step-item">
+      <div class="step-circle">3</div>
+      <div class="step-label">Documents</div>
+    </div>
+    <div class="step-line"></div>
+    <div class="step-item">
+      <div class="step-circle">4</div>
+      <div class="step-label">Compte</div>
+    </div>
+  </div>
+
+  <form>
+
+```
+<!-- 1. Infos personnelles -->
+<div class="form-card">
+  <div class="card-title"><span class="icon">👤</span> Informations personnelles</div>
+  <p class="card-sub">Ces informations seront visibles sur votre profil public</p>
+
+  <div style="margin-bottom:1.5rem">
+    <label>Photo de profil</label>
+    <div class="photo-upload" onclick="document.getElementById('photo').click()">
+      <div class="icon">📷</div>
+      <p><span>Cliquez pour ajouter</span> votre photo</p>
+      <p>JPG, PNG — Max 2 Mo</p>
+      <input type="file" id="photo" accept="image/*" style="display:none">
+    </div>
+  </div>
+
+  <div class="form-grid">
+    <div class="field">
+      <label>Prénom <span class="req">*</span></label>
+      <input type="text" placeholder="Ex: Paul">
+    </div>
+    <div class="field">
+      <label>Nom <span class="req">*</span></label>
+      <input type="text" placeholder="Ex: Nkemdirim">
+    </div>
+    <div class="field">
+      <label>Téléphone <span class="req">*</span></label>
+      <input type="tel" placeholder="Ex: 6XX XXX XXX">
+    </div>
+    <div class="field">
+      <label>Ville <span class="req">*</span></label>
+      <select>
+        <option value="">Choisir une ville</option>
+        <option>Yaoundé</option>
+        <option>Douala</option>
+        <option>Bafoussam</option>
+        <option>Bamenda</option>
+        <option>Garoua</option>
+        <option>Maroua</option>
+        <option>Ngaoundéré</option>
+        <option>Bertoua</option>
+        <option>Ebolowa</option>
+        <option>Autre</option>
+      </select>
+    </div>
+    <div class="field span2">
+      <label>Biographie courte</label>
+      <textarea placeholder="Décrivez-vous en quelques mots : votre expérience, votre approche pédagogique..."></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- 2. Compétences -->
+<div class="form-card">
+  <div class="card-title"><span class="icon">📚</span> Compétences</div>
+  <p class="card-sub">Matières enseignées et niveaux disponibles</p>
+
+  <div style="margin-bottom:1.5rem">
+    <label style="margin-bottom:0.6rem;display:block">Matières enseignées <span class="req">*</span></label>
+    <div class="checkbox-grid">
+      <label class="check-item"><input type="checkbox"> Mathématiques</label>
+      <label class="check-item"><input type="checkbox"> Physique-Chimie</label>
+      <label class="check-item"><input type="checkbox"> Français</label>
+      <label class="check-item"><input type="checkbox"> Anglais</label>
+      <label class="check-item"><input type="checkbox"> SVT / Biologie</label>
+      <label class="check-item"><input type="checkbox"> Histoire-Géo</label>
+      <label class="check-item"><input type="checkbox"> Informatique</label>
+      <label class="check-item"><input type="checkbox"> Philosophie</label>
+      <label class="check-item"><input type="checkbox"> Autre</label>
+    </div>
+  </div>
+
+  <div style="margin-bottom:1.5rem">
+    <label style="margin-bottom:0.6rem;display:block">Niveaux <span class="req">*</span></label>
+    <div class="level-grid">
+      <label class="level-btn"><input type="checkbox"> Maternelle</label>
+      <label class="level-btn"><input type="checkbox"> Primaire</label>
+      <label class="level-btn"><input type="checkbox"> Collège</label>
+      <label class="level-btn"><input type="checkbox"> Lycée</label>
+      <label class="level-btn"><input type="checkbox"> Université</label>
+    </div>
+  </div>
+
+  <div>
+    <label style="margin-bottom:0.6rem;display:block">Disponibilités <span class="req">*</span></label>
+    <div class="dispo-grid">
+      <label class="day-btn"><input type="checkbox"> Lun</label>
+      <label class="day-btn"><input type="checkbox"> Mar</label>
+      <label class="day-btn"><input type="checkbox"> Mer</label>
+      <label class="day-btn"><input type="checkbox"> Jeu</label>
+      <label class="day-btn"><input type="checkbox"> Ven</label>
+      <label class="day-btn"><input type="checkbox"> Sam</label>
+      <label class="day-btn"><input type="checkbox"> Dim</label>
+    </div>
+  </div>
+</div>
+
+<!-- 3. Documents -->
+<div class="form-card">
+  <div class="card-title"><span class="icon">📄</span> Documents</div>
+  <p class="card-sub">Votre CV et diplômes pour rassurer les parents</p>
+
+  <div style="margin-bottom:1.2rem">
+    <label style="margin-bottom:0.6rem;display:block">CV (PDF) <span class="req">*</span></label>
+    <div class="cv-upload" onclick="document.getElementById('cv').click()">
+      <div class="cv-icon">📎</div>
+      <div class="cv-text">
+        <strong>Déposer votre CV</strong>
+        <p><span>Cliquez pour choisir</span> un fichier PDF</p>
+        <p>Max 5 Mo</p>
+      </div>
+      <input type="file" id="cv" accept=".pdf" style="display:none">
+    </div>
+  </div>
+
+  <div>
+    <label style="margin-bottom:0.6rem;display:block">Diplôme / Attestation</label>
+    <div class="cv-upload" onclick="document.getElementById('diplome').click()">
+      <div class="cv-icon">🎓</div>
+      <div class="cv-text">
+        <strong>Déposer votre diplôme</strong>
+        <p><span>Cliquez pour choisir</span> PDF ou image</p>
+        <p>Max 5 Mo</p>
+      </div>
+      <input type="file" id="diplome" accept=".pdf,image/*" style="display:none">
+    </div>
+  </div>
+</div>
+
+<!-- 4. Compte -->
+<div class="form-card">
+  <div class="card-title"><span class="icon">🔐</span> Informations de connexion</div>
+  <p class="card-sub">Ces informations sont privées et sécurisées</p>
+
+  <div class="form-grid">
+    <div class="field span2">
+      <label>Adresse email <span class="req">*</span></label>
+      <input type="email" placeholder="votre@email.com">
+    </div>
+    <div class="field">
+      <label>Mot de passe <span class="req">*</span></label>
+      <div class="pwd-wrap">
+        <input type="password" id="pwd" placeholder="Min. 8 caractères">
+        <span class="pwd-toggle" onclick="togglePwd('pwd')">👁</span>
+      </div>
+    </div>
+    <div class="field">
+      <label>Confirmer le mot de passe <span class="req">*</span></label>
+      <div class="pwd-wrap">
+        <input type="password" id="pwd2" placeholder="Répétez le mot de passe">
+        <span class="pwd-toggle" onclick="togglePwd('pwd2')">👁</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="submit-wrap">
+  <button type="submit" class="btn-submit">
+    Créer mon profil 🚀
+  </button>
+  <p class="login-link">Déjà un compte ? <a href="#">Se connecter</a></p>
+</div>
+```
+
+  </form>
+</div>
+
+<script>
+  function togglePwd(id) {
+    const input = document.getElementById(id);
+    input.type = input.type === 'password' ? 'text' : 'password';
+  }
+</script>
+
+</body>
+</html>
