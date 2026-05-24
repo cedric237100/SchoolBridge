@@ -16,7 +16,6 @@
     html{scroll-behavior:smooth;}
     body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans',sans-serif;font-weight:400;overflow-x:hidden;}
 
-```
 nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.2rem 5vw;background:rgba(247,245,240,0.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);}
 .logo{font-family:'Playfair Display',serif;font-weight:800;font-size:1.4rem;color:var(--dark);text-decoration:none;}
 .logo span{color:var(--green);}
@@ -112,6 +111,7 @@ footer .logo{color:#fff;font-size:1.1rem;}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
 .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.7s ease,transform 0.7s ease;}
 .reveal.visible{opacity:1;transform:none;}
+.lang-select{padding:0.5rem;width:auto;cursor:pointer;}
 
 @media(max-width:768px){
   .hero-inner{grid-template-columns:1fr;gap:3rem;}
@@ -120,9 +120,7 @@ footer .logo{color:#fff;font-size:1.1rem;}
   .card-float1{display:none;}
   .card-float2{width:180px;bottom:0;right:0;}
   .roles-grid{grid-template-columns:1fr;}
-  .nav-links{display:none;}
-}
-```
+  .nav-links{display:none;}}
 
   </style>
 </head>
@@ -136,8 +134,12 @@ footer .logo{color:#fff;font-size:1.1rem;}
     <li><a href="#">Répétiteurs</a></li>
   </ul>
   <div class="nav-cta">
-    <a href="#" class="btn btn-ghost">Se connecter</a>
-    <a href="#" class="btn btn-green">S'inscrire</a>
+    <select id="langSwitch" class="btn btn-ghost lang-select" title="Select language" aria-label="Select language">
+      <option value="fr">🇫🇷 FR</option>
+      <option value="en">🇺🇸 EN</option>
+    </select>
+    <a href="#" class="btn btn-ghost" data-i18n="nav.login">Se connecter</a>
+    <a href="inscription.html" class="btn btn-green" data-i18n="nav.signup">S'inscrire</a>
   </div>
 </nav>
 
@@ -277,11 +279,56 @@ footer .logo{color:#fff;font-size:1.1rem;}
 
 <footer>
   <a href="#" class="logo">School<span style="color:var(--green2)">Bridge</span></a>
-  <span>© 2026 SchoolBridge · Cameroun 🇨🇲</span>
-  <span>Made with ❤️</span>
+  <span> SchoolBridge · Cameroun 🇨🇲</span>  <span>Made with </span>
 </footer>
 
 <script>
+  const translations = {
+    fr: {
+      "nav.how": "Comment ça marche",
+      "nav.roles": "Je suis...",
+      "nav.tutors": "Répétiteurs",
+      "nav.login": "Se connecter",
+      "nav.signup": "S'inscrire",
+      "hero.badge": "Plateforme #1 au Cameroun",
+      "hero.title": "Trouvez le <span class='highlight'>répétiteur</span><br>idéal pour<br>votre enfant",
+      "hero.sub": "SchoolBridge connecte les parents avec les meilleurs répétiteurs certifiés du Cameroun. Consultez les CVs, comparez les profils et choisissez en toute confiance.",
+      "hero.find": "Trouver un répétiteur",
+      "hero.cv": "Déposer mon CV",
+    },
+    en: {
+      "nav.how": "How it works",
+      "nav.roles": "I am...",
+      "nav.tutors": "Tutors",
+      "nav.login": "Login",
+      "nav.signup": "Sign Up",
+      "hero.badge": "#1 Platform in Cameroon",
+      "hero.title": "Find the <span class='highlight'>perfect tutor</span><br>for<br>your child",
+      "hero.sub": "SchoolBridge connects parents with the best certified tutors in Cameroon. View CVs, compare profiles and choose with confidence.",
+      "hero.find": "Find a Tutor",
+      "hero.cv": "Submit my CV",
+    }
+  };
+
+  function updateLanguage(lang) {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (translations[lang][key]) {
+        el.innerHTML = translations[lang][key];
+      }
+    });
+    document.documentElement.lang = lang;
+    localStorage.setItem('schoolbridge_lang', lang);
+  }
+
+  const langSwitch = document.getElementById('langSwitch');
+  langSwitch.addEventListener('change', (e) => updateLanguage(e.target.value));
+
+  // Init lang
+  const savedLang = localStorage.getItem('schoolbridge_lang') || 'fr';
+  langSwitch.value = savedLang;
+  updateLanguage(savedLang);
+
   const obs = new IntersectionObserver(entries => {
     entries.forEach((e,i) => { if(e.isIntersecting) setTimeout(()=>e.target.classList.add('visible'),i*80); });
   },{threshold:0.1});

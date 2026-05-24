@@ -35,6 +35,8 @@ const Profile = sequelize.define('Profile', {
         type: DataTypes.BOOLEAN,
         defaultValue: false
     }
+}, {
+    underscored: true
 });
 
 User.hasOne(Profile, { foreignKey: 'user_id' });

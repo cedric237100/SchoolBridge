@@ -28,6 +28,8 @@ const Availability = sequelize.define('Availability', {
         type: DataTypes.TIME,
         allowNull: false
     }
+}, {
+    underscored: true
 });
 
 Profile.hasMany(Availability, { foreignKey: 'profile_id' });

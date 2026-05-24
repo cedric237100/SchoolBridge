@@ -15,7 +15,6 @@
     html { scroll-behavior: smooth; }
     body { background: var(--bg); color: var(--dark); font-family: 'Plus Jakarta Sans', sans-serif; min-height: 100vh; }
 
-```
 nav {
   display: flex; justify-content: space-between; align-items: center;
   padding: 1.2rem 5vw; background: var(--card); border-bottom: 1px solid var(--border);
@@ -176,23 +175,27 @@ textarea { resize: vertical; min-height: 90px; }
   .checkbox-grid { grid-template-columns: repeat(2, 1fr); }
   .dispo-grid { grid-template-columns: repeat(4, 1fr); }
 }
-```
-
   </style>
 </head>
 <body>
 
 <nav>
   <a href="index.html" class="logo">School<span>Bridge</span></a>
-  <span style="font-size:0.85rem;color:var(--muted)">Déjà inscrit ? <a href="#" style="color:var(--green);font-weight:600;text-decoration:none">Se connecter</a></span>
+  <div style="display:flex; gap: 1rem; align-items:center;">
+    <select id="langSwitch" style="padding: 0.4rem; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 0.85rem;">
+      <option value="fr">🇫🇷 FR</option>
+      <option value="en">🇺🇸 EN</option>
+    </select>
+    <span style="font-size:0.85rem;color:var(--muted)">Déjà inscrit ? <a href="#" style="color:var(--green);font-weight:600;text-decoration:none">Se connecter</a></span>
+  </div>
 </nav>
 
 <div class="page-wrap">
 
   <div class="page-header">
     <div class="page-badge">👨‍🏫 Répétiteur</div>
-    <h1 class="page-title">Créer mon profil</h1>
-    <p class="page-sub">Rejoignez des milliers de répétiteurs et trouvez des élèves au Cameroun</p>
+    <h1 class="page-title" data-i18n="form.title">Créer mon profil</h1>
+    <p class="page-sub" data-i18n="form.sub">Rejoignez des milliers de répétiteurs et trouvez des élèves au Cameroun</p>
   </div>
 
   <!-- Steps -->
@@ -219,9 +222,8 @@ textarea { resize: vertical; min-height: 90px; }
     </div>
   </div>
 
-  <form>
+  <form id="registerForm">
 
-```
 <!-- 1. Infos personnelles -->
 <div class="form-card">
   <div class="card-title"><span class="icon">👤</span> Informations personnelles</div>
@@ -383,8 +385,6 @@ textarea { resize: vertical; min-height: 90px; }
   </button>
   <p class="login-link">Déjà un compte ? <a href="#">Se connecter</a></p>
 </div>
-```
-
   </form>
 </div>
 
@@ -393,6 +393,83 @@ textarea { resize: vertical; min-height: 90px; }
     const input = document.getElementById(id);
     input.type = input.type === 'password' ? 'text' : 'password';
   }
+
+  const translations = {
+    fr: {
+      "form.title": "Créer mon profil",
+      "form.sub": "Rejoignez des milliers de répétiteurs et trouvez des élèves au Cameroun",
+      // ... more keys
+    },
+    en: {
+      "form.title": "Create my Profile",
+      "form.sub": "Join thousands of tutors and find students in Cameroon",
+      // ... more keys
+    }
+  };
+
+  const langSwitch = document.getElementById('langSwitch');
+  langSwitch.addEventListener('change', (e) => {
+    localStorage.setItem('schoolbridge_lang', e.target.value);
+    location.reload(); // Reload to apply changes or use the update function
+  });
+
+  const savedLang = localStorage.getItem('schoolbridge_lang') || 'fr';
+  langSwitch.value = savedLang;
+
+  // Form Submission Logic
+  const form = document.getElementById('registerForm');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    
+    // Basic fields
+    formData.append('username', form.querySelector('[type="email"]').value.split('@')[0]);
+    formData.append('email', form.querySelector('[type="email"]').value);
+    formData.append('password', document.getElementById('pwd').value);
+    formData.append('role', 'tutor');
+    
+    // Profile fields
+    const profileData = {
+        full_name: form.querySelector('[placeholder="Ex: Paul"]').value + ' ' + form.querySelector('[placeholder="Ex: Nkemdirim"]').value,
+        bio: form.querySelector('textarea').value,
+        subjects: Array.from(form.querySelectorAll('.checkbox-grid input:checked')).map(i => i.parentNode.textContent.trim()),
+        experience_years: 0 // Default
+    };
+    
+    try {
+        // 1. Register User
+        const registerRes = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                username: profileData.full_name.replace(' ', '_'),
+                email: formData.get('email'),
+                password: formData.get('password'),
+                role: 'tutor'
+            })
+        });
+        
+        const userData = await registerRes.json();
+        if (!registerRes.ok) throw new Error(userData.message);
+
+        // 2. Upload CV
+        const cvFile = document.getElementById('cv').files[0];
+        if (cvFile) {
+            const cvFormData = new FormData();
+            cvFormData.append('cv', cvFile);
+            
+            await fetch('/api/profiles/upload-cv', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${userData.token}` },
+                body: cvFormData
+            });
+        }
+
+        alert('Registration successful!');
+    } catch (err) {
+        alert('Error: ' + err.message);
+    }
+  });
 </script>
 
 </body>
