@@ -27,6 +27,10 @@ const Job = sequelize.define('Job', {
         type: DataTypes.STRING,
         allowNull: false,
     },
+    pedagogy: {
+        type: DataTypes.ENUM('francophone', 'anglophone'),
+        defaultValue: 'francophone'
+    },
     class_level: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -38,9 +42,16 @@ const Job = sequelize.define('Job', {
     subjects: {
         type: DataTypes.JSON, // Array of subjects needed
     },
+    whatsapp_number: {
+        type: DataTypes.STRING,
+    },
     status: {
         type: DataTypes.ENUM('open', 'filled', 'closed'),
         defaultValue: 'open'
+    },
+    is_featured: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
     }
 }, {
     underscored: true

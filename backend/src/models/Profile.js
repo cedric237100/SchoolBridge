@@ -22,16 +22,34 @@ const Profile = sequelize.define('Profile', {
     bio: {
         type: DataTypes.TEXT,
     },
+    pedagogy: {
+        type: DataTypes.ENUM('francophone', 'anglophone', 'both'),
+        defaultValue: 'both'
+    },
+    classes: {
+        type: DataTypes.JSON, // Array of class IDs
+    },
     subjects: {
-        type: DataTypes.JSON,
+        type: DataTypes.JSON, // Array of subject IDs
     },
     experience_years: {
         type: DataTypes.INTEGER,
+    },
+    hourly_rate: {
+        type: DataTypes.INTEGER, // in CFA
+        defaultValue: 0
+    },
+    whatsapp_number: {
+        type: DataTypes.STRING,
     },
     cv_url: {
         type: DataTypes.STRING,
     },
     is_approved: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+    },
+    is_premium: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
     }

@@ -26,16 +26,27 @@ exports.getProfileById = async (req, res) => {
 };
 
 exports.updateProfile = async (req, res) => {
-    const { full_name, bio, subjects, experience_years } = req.body;
+    const { full_name, bio, pedagogy, classes, subjects, experience_years, hourly_rate, whatsapp_number } = req.body;
     try {
         let profile = await Profile.findOne({ where: { user_id: req.user.id } });
         
+        const profileData = {
+            full_name,
+            bio,
+            pedagogy: pedagogy || 'both',
+            classes: classes || [],
+            subjects: subjects || [],
+            experience_years: experience_years || 0,
+            hourly_rate: hourly_rate || 0,
+            whatsapp_number
+        };
+
         if (profile) {
-            profile = await profile.update({ full_name, bio, subjects, experience_years });
+            profile = await profile.update(profileData);
         } else {
             profile = await Profile.create({ 
                 user_id: req.user.id, 
-                full_name, bio, subjects, experience_years 
+                ...profileData
             });
         }
         
