@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SchoolBridge — Inscription & Connexion</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
   <style>
     :root {
       --primary: #0F6A3B;
@@ -20,7 +23,9 @@
       --shadow: 0 10px 30px rgba(15, 106, 59, 0.05);
     }
 
-    *, *::before, *::after {
+    *,
+    *::before,
+    *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
@@ -107,7 +112,7 @@
     .tab-btn.active {
       background: var(--card);
       color: var(--primary);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     }
 
     /* Form Card */
@@ -259,7 +264,9 @@
       margin-left: 2px;
     }
 
-    input, select, textarea {
+    input,
+    select,
+    textarea {
       padding: 0.75rem 1rem;
       border: 1.5px solid var(--border);
       border-radius: 10px;
@@ -271,7 +278,9 @@
       transition: all 0.2s;
     }
 
-    input:focus, select:focus, textarea:focus {
+    input:focus,
+    select:focus,
+    textarea:focus {
       border-color: var(--primary);
       background: #fff;
       box-shadow: 0 0 0 3px rgba(15, 106, 59, 0.08);
@@ -358,6 +367,12 @@
       font-weight: 700;
     }
 
+    .cv-file-name {
+      font-weight: 700;
+      color: var(--primary);
+      margin-top: 0.5rem;
+    }
+
     /* Role selection cards */
     .role-selection {
       display: grid;
@@ -412,23 +427,40 @@
       transition: all 0.22s ease-in-out;
       font-family: inherit;
     }
+
     .btn-primary {
       background: var(--primary);
       color: #fff;
     }
+
     .btn-primary:hover {
       background: var(--primary-hover);
       transform: translateY(-1px);
     }
+
     .btn-ghost {
       background: transparent;
       color: var(--text);
       border: 1.5px solid var(--border);
     }
+
     .btn-ghost:hover {
       border-color: var(--primary);
       color: var(--primary);
     }
+
+    .invisible {
+      visibility: hidden;
+    }
+
+    .btn-full {
+      width: 100%;
+    }
+
+    .btn-pad-lg {
+      padding: 1rem;
+    }
+
     .wizard-actions {
       display: flex;
       justify-content: space-between;
@@ -441,497 +473,513 @@
       .form-group {
         grid-template-columns: 1fr;
       }
+
       .field.span-2 {
         grid-column: span 1;
       }
+
       .role-selection {
         grid-template-columns: 1fr;
       }
+
       .catalog-list {
         grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
+
 <body>
 
-<nav>
-  <a href="index.html" class="logo">School<span>Bridge</span></a>
-  <div class="nav-right">
-    <select id="langSwitch" class="lang-select" title="Change Language" aria-label="Change Language">
-      <option value="fr">🇫🇷 FR</option>
-      <option value="en">🇺🇸 EN</option>
-    </select>
-  </div>
-</nav>
+  <nav>
+    <a href="index.html" class="logo">School<span>Bridge</span></a>
+    <div class="nav-right">
+      <select id="langSwitch" class="lang-select" title="Change Language" aria-label="Change Language">
+        <option value="fr">🇫🇷 FR</option>
+        <option value="en">🇺🇸 EN</option>
+      </select>
+    </div>
+  </nav>
 
-<div class="auth-container">
-  
-  <div class="tab-switcher">
-    <button type="button" class="tab-btn active" id="tabSignup" onclick="switchAuthTab('signup')">S'inscrire</button>
-    <button type="button" class="tab-btn" id="tabLogin" onclick="switchAuthTab('login')">Se connecter</button>
-  </div>
+  <div class="auth-container">
 
-  <!-- SIGNUP FLOW -->
-  <div id="signupFlow" class="form-card">
-    <div class="page-header">
-      <div class="page-badge" id="roleBadge">Répétiteur</div>
-      <h1 class="page-title" data-i18n="form.title">Créer mon profil</h1>
-      <p class="page-sub" data-i18n="form.sub">Rejoignez des milliers de répétiteurs et trouvez des élèves au Cameroun</p>
+    <div class="tab-switcher">
+      <button type="button" class="tab-btn active" id="tabSignup" onclick="switchAuthTab('signup')">S'inscrire</button>
+      <button type="button" class="tab-btn" id="tabLogin" onclick="switchAuthTab('login')">Se connecter</button>
     </div>
 
-    <!-- Steps -->
-    <div class="steps-bar">
-      <div class="step-progress-fill" id="stepProgress"></div>
-      <div class="step-item active" id="stepItem1">
-        <div class="step-circle">1</div>
-        <div class="step-label" data-i18n="form.step1">Rôle & Infos</div>
+    <!-- SIGNUP FLOW -->
+    <div id="signupFlow" class="form-card">
+      <div class="page-header">
+        <div class="page-badge" id="roleBadge">Répétiteur</div>
+        <h1 class="page-title" data-i18n="form.title">Créer mon profil</h1>
+        <p class="page-sub" data-i18n="form.sub">Rejoignez des milliers de répétiteurs et trouvez des élèves au Cameroun
+        </p>
       </div>
-      <div class="step-item" id="stepItem2">
-        <div class="step-circle">2</div>
-        <div class="step-label" data-i18n="form.step2">Pédagogie</div>
-      </div>
-      <div class="step-item" id="stepItem3">
-        <div class="step-circle">3</div>
-        <div class="step-label" data-i18n="form.step3">Documents</div>
-      </div>
-      <div class="step-item" id="stepItem4">
-        <div class="step-circle">4</div>
-        <div class="step-label" data-i18n="form.step4">Compte</div>
-      </div>
-    </div>
 
-    <form id="wizardForm" onsubmit="handleWizardSubmit(event)">
-      <!-- STEP 1: Basic Info & Role -->
-      <div id="stepSection1" class="step-section">
-        <div class="role-selection">
-          <div class="role-box active" id="roleBoxTutor" onclick="selectRole('tutor')">
-            <div class="emoji">👨‍🏫</div>
-            <div class="title" data-i18n="roles.tutor.title">Je suis répétiteur</div>
-          </div>
-          <div class="role-box" id="roleBoxParent" onclick="selectRole('parent')">
-            <div class="emoji">👪</div>
-            <div class="title" data-i18n="roles.parent.title">Je suis parent</div>
-          </div>
+      <!-- Steps -->
+      <div class="steps-bar">
+        <div class="step-progress-fill" id="stepProgress"></div>
+        <div class="step-item active" id="stepItem1">
+          <div class="step-circle">1</div>
+          <div class="step-label" data-i18n="form.step1">Rôle et Infos</div>
         </div>
-
-        <div class="form-group">
-          <div class="field">
-            <label><span data-i18n="form.firstName">Prénom</span><span class="req">*</span></label>
-            <input type="text" id="firstName" required placeholder="Paul" data-i18n-placeholder="form.firstName">
-          </div>
-          <div class="field">
-            <label><span data-i18n="form.lastName">Nom</span><span class="req">*</span></label>
-            <input type="text" id="lastName" required placeholder="Nkemdirim" data-i18n-placeholder="form.lastName">
-          </div>
+        <div class="step-item" id="stepItem2">
+          <div class="step-circle">2</div>
+          <div class="step-label" data-i18n="form.step2">Pédagogie</div>
         </div>
-        <div class="form-group">
-          <div class="field">
-            <label><span data-i18n="form.phone">Téléphone</span><span class="req">*</span></label>
-            <input type="tel" id="phoneNumber" required placeholder="6XX XXX XXX" data-i18n-placeholder="form.phone">
-          </div>
-          <div class="field">
-            <label><span data-i18n="form.whatsapp">WhatsApp</span></label>
-            <input type="tel" id="whatsappNumber" placeholder="6XX XXX XXX" data-i18n-placeholder="form.whatsapp">
-          </div>
+        <div class="step-item" id="stepItem3">
+          <div class="step-circle">3</div>
+          <div class="step-label" data-i18n="form.step3">Documents</div>
+        </div>
+        <div class="step-item" id="stepItem4">
+          <div class="step-circle">4</div>
+          <div class="step-label" data-i18n="form.step4">Compte</div>
         </div>
       </div>
 
-      <!-- STEP 2: Pedagogy & Subjects Selector -->
-      <div id="stepSection2" class="step-section" style="display:none">
-        <div class="form-group full">
-          <div class="field">
-            <label data-i18n="form.pedagogyLabel">Système Pédagogique</label>
-            <div class="pedagogy-toggle" id="tutorPedagogySelector">
-              <button type="button" class="pedagogy-btn active" onclick="setPedagogy('francophone')">Francophone</button>
-              <button type="button" class="pedagogy-btn" onclick="setPedagogy('anglophone')">Anglophone</button>
-              <button type="button" class="pedagogy-btn" id="pedagogyBothBtn" onclick="setPedagogy('both')">Les deux</button>
+      <form id="wizardForm" onsubmit="handleWizardSubmit(event)">
+        <!-- STEP 1: Basic Info & Role -->
+        <div id="stepSection1" class="step-section">
+          <div class="role-selection">
+            <div class="role-box active" id="roleBoxTutor" onclick="selectRole('tutor')">
+              <div class="emoji">👨‍🏫</div>
+              <div class="title" data-i18n="roles.tutor.title">Je suis répétiteur</div>
+            </div>
+            <div class="role-box" id="roleBoxParent" onclick="selectRole('parent')">
+              <div class="emoji">👪</div>
+              <div class="title" data-i18n="roles.parent.title">Je suis parent</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="field">
+              <label><span data-i18n="form.firstName">Prénom</span><span class="req">*</span></label>
+              <input type="text" id="firstName" required placeholder="Paul" data-i18n-placeholder="form.firstName">
+            </div>
+            <div class="field">
+              <label><span data-i18n="form.lastName">Nom</span><span class="req">*</span></label>
+              <input type="text" id="lastName" required placeholder="Nkemdirim" data-i18n-placeholder="form.lastName">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="field">
+              <label><span data-i18n="form.phone">Téléphone</span><span class="req">*</span></label>
+              <input type="tel" id="phoneNumber" required placeholder="6XX XXX XXX" data-i18n-placeholder="form.phone">
+            </div>
+            <div class="field">
+              <label><span data-i18n="form.whatsapp">WhatsApp</span></label>
+              <input type="tel" id="whatsappNumber" placeholder="6XX XXX XXX" data-i18n-placeholder="form.whatsapp">
             </div>
           </div>
         </div>
 
-        <div class="form-group">
-          <div class="field">
-            <label data-i18n="form.levelsLabel">Niveaux d'enseignement</label>
-            <div class="catalog-list" id="classList"></div>
+        <!-- STEP 2: Pedagogy & Subjects Selector -->
+        <div id="stepSection2" class="step-section" style="display:none">
+          <div class="form-group full">
+            <div class="field">
+              <label data-i18n="form.pedagogyLabel">Système Pédagogique</label>
+              <div class="pedagogy-toggle" id="tutorPedagogySelector">
+                <button type="button" class="pedagogy-btn active"
+                  onclick="setPedagogy('francophone')">Francophone</button>
+                <button type="button" class="pedagogy-btn" onclick="setPedagogy('anglophone')">Anglophone</button>
+                <button type="button" class="pedagogy-btn" id="pedagogyBothBtn" onclick="setPedagogy('both')">Les
+                  deux</button>
+              </div>
+            </div>
           </div>
-          <div class="field">
-            <label data-i18n="form.subjectsLabel">Matières</label>
-            <div class="catalog-list" id="subjectList"></div>
-          </div>
-        </div>
 
-        <div class="form-group">
-          <div class="field" id="rateField">
-            <label data-i18n="form.rate">Tarif horaire souhaité (CFA)</label>
-            <input type="number" id="hourlyRate" value="3000">
+          <div class="form-group">
+            <div class="field">
+              <label data-i18n="form.levelsLabel">Niveaux d'enseignement</label>
+              <div class="catalog-list" id="classList"></div>
+            </div>
+            <div class="field">
+              <label data-i18n="form.subjectsLabel">Matières</label>
+              <div class="catalog-list" id="subjectList"></div>
+            </div>
           </div>
-          <div class="field">
-            <label><span data-i18n="form.city">Ville</span><span class="req">*</span></label>
-            <select id="citySelect" required>
-              <option value="">Yaoundé</option>
-              <option>Yaoundé</option>
-              <option>Douala</option>
-              <option>Bafoussam</option>
-              <option>Bamenda</option>
-              <option>Garoua</option>
-              <option>Maroua</option>
-              <option>Ngaoundéré</option>
-              <option>Bertoua</option>
-              <option>Ebolowa</option>
-            </select>
-          </div>
-        </div>
-      </div>
 
-      <!-- STEP 3: Bio & CV upload -->
-      <div id="stepSection3" class="step-section" style="display:none">
-        <div class="form-group full">
-          <div class="field">
-            <label data-i18n="form.bio">Biographie</label>
-            <textarea id="bio" placeholder="Décrivez votre expérience..." data-i18n-placeholder="form.bioPlaceholder"></textarea>
-          </div>
-        </div>
-        <div class="form-group full" id="cvUploadContainer">
-          <div class="field">
-            <label data-i18n="form.cvLabel">CV (PDF)</label>
-            <div class="upload-zone" onclick="document.getElementById('cvInput').click()">
-              <div class="icon">📎</div>
-              <p><span data-i18n="form.cvClick">Déposer votre CV</span></p>
-              <p id="cvFileName" style="font-weight:700;color:var(--primary);margin-top:0.5rem;"></p>
-              <input type="file" id="cvInput" accept=".pdf" style="display:none" onchange="displayFileName('cvInput', 'cvFileName')">
+          <div class="form-group">
+            <div class="field" id="rateField">
+              <label data-i18n="form.rate">Tarif horaire souhaité (CFA)</label>
+              <input type="number" id="hourlyRate" value="3000">
+            </div>
+            <div class="field">
+              <label><span data-i18n="form.city">Ville</span><span class="req">*</span></label>
+              <select id="citySelect" required>
+                <option value="">Yaoundé</option>
+                <option>Yaoundé</option>
+                <option>Douala</option>
+                <option>Bafoussam</option>
+                <option>Bamenda</option>
+                <option>Garoua</option>
+                <option>Maroua</option>
+                <option>Ngaoundéré</option>
+                <option>Bertoua</option>
+                <option>Ebolowa</option>
+              </select>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- STEP 4: Login Account setup -->
-      <div id="stepSection4" class="step-section" style="display:none">
-        <div class="form-group full">
-          <div class="field">
-            <label><span data-i18n="form.email">Adresse email</span><span class="req">*</span></label>
-            <input type="email" id="email" required placeholder="votre@email.com" data-i18n-placeholder="form.email">
+        <!-- STEP 3: Bio & CV upload -->
+        <div id="stepSection3" class="step-section" style="display:none">
+          <div class="form-group full">
+            <div class="field">
+              <label data-i18n="form.bio">Biographie</label>
+              <textarea id="bio" placeholder="Décrivez votre expérience..."
+                data-i18n-placeholder="form.bioPlaceholder"></textarea>
+            </div>
+          </div>
+          <div class="form-group full" id="cvUploadContainer">
+            <div class="field">
+              <label data-i18n="form.cvLabel">CV (PDF)</label>
+              <div class="upload-zone" onclick="document.getElementById('cvInput').click()">
+                <div class="icon">📎</div>
+                <p><span data-i18n="form.cvClick">Déposer votre CV</span></p>
+                <p id="cvFileName" class="cv-file-name"></p>
+                <input type="file" id="cvInput" accept=".pdf" style="display:none"
+                  onchange="displayFileName('cvInput', 'cvFileName')">
+              </div>
+            </div>
           </div>
         </div>
-        <div class="form-group">
-          <div class="field">
-            <label><span data-i18n="form.pwd">Mot de passe</span><span class="req">*</span></label>
-            <input type="password" id="password" required placeholder="Min 8 caractères" data-i18n-placeholder="form.pwd">
+
+        <!-- STEP 4: Login Account setup -->
+        <div id="stepSection4" class="step-section" style="display:none">
+          <div class="form-group full">
+            <div class="field">
+              <label><span data-i18n="form.email">Adresse email</span><span class="req">*</span></label>
+              <input type="email" id="email" required placeholder="votre@email.com" data-i18n-placeholder="form.email">
+            </div>
           </div>
-          <div class="field">
-            <label><span data-i18n="form.pwdConfirm">Confirmer</span><span class="req">*</span></label>
-            <input type="password" id="passwordConfirm" required placeholder="Min 8 caractères" data-i18n-placeholder="form.pwdConfirm">
+          <div class="form-group">
+            <div class="field">
+              <label><span data-i18n="form.pwd">Mot de passe</span><span class="req">*</span></label>
+              <input type="password" id="password" autocomplete="new-password" required placeholder="Min 8 caractères"
+                data-i18n-placeholder="form.pwd">
+            </div>
+            <div class="field">
+              <label><span data-i18n="form.pwdConfirm">Confirmer</span><span class="req">*</span></label>
+              <input type="password" id="passwordConfirm" autocomplete="new-password" required
+                placeholder="Min 8 caractères" data-i18n-placeholder="form.pwdConfirm">
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="wizard-actions">
-        <button type="button" class="btn btn-ghost" id="prevBtn" onclick="goBack()" style="visibility:hidden">Précédent</button>
-        <button type="button" class="btn btn-primary" id="nextBtn" onclick="goNext()">Suivant</button>
-        <button type="submit" class="btn btn-primary" id="submitBtn" style="display:none" data-i18n="form.btnSubmit">Créer mon profil</button>
-      </div>
-    </form>
-  </div>
-
-  <!-- LOGIN TAB -->
-  <div id="loginFlow" class="form-card" style="display:none">
-    <div class="page-header">
-      <h1 class="page-title" data-i18n="nav.login">Se connecter</h1>
-      <p class="page-sub" data-i18n="form.hasAccount">Accédez à votre compte SchoolBridge</p>
+        <div class="wizard-actions">
+          <button type="button" class="btn btn-ghost invisible" id="prevBtn" onclick="goBack()">Précédent</button>
+          <button type="button" class="btn btn-primary" id="nextBtn" onclick="goNext()">Suivant</button>
+          <button type="submit" class="btn btn-primary" id="submitBtn" style="display:none"
+            data-i18n="form.btnSubmit">Créer mon profil</button>
+        </div>
+      </form>
     </div>
 
-    <form onsubmit="handleLoginSubmit(event)">
-      <div class="form-group full">
-        <div class="field">
-          <label data-i18n="form.email">Adresse email</label>
-          <input type="email" id="loginEmail" required placeholder="paul@example.com" data-i18n-placeholder="form.email">
-        </div>
+    <!-- LOGIN TAB -->
+    <div id="loginFlow" class="form-card" style="display:none">
+      <div class="page-header">
+        <h1 class="page-title" data-i18n="nav.login">Se connecter</h1>
+        <p class="page-sub" data-i18n="form.hasAccount">Accédez à votre compte SchoolBridge</p>
       </div>
-      <div class="form-group full">
-        <div class="field">
-          <label data-i18n="form.pwd">Mot de passe</label>
-          <input type="password" id="loginPassword" required placeholder="••••••••" data-i18n-placeholder="form.pwd">
+
+      <form onsubmit="handleLoginSubmit(event)">
+        <div class="form-group full">
+          <div class="field">
+            <label data-i18n="form.email">Adresse email</label>
+            <input type="email" id="loginEmail" required placeholder="paul@example.com"
+              data-i18n-placeholder="form.email">
+          </div>
         </div>
-      </div>
-      <button type="submit" class="btn btn-primary" style="width:100%;padding:1rem;" data-i18n="nav.login">Se connecter</button>
-    </form>
+        <div class="form-group full">
+          <div class="field">
+            <label data-i18n="form.pwd">Mot de passe</label>
+            <input type="password" id="loginPassword" autocomplete="current-password" required placeholder="••••••••"
+              data-i18n-placeholder="form.pwd">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full btn-pad-lg" data-i18n="nav.login">Se
+          connecter</button>
+      </form>
+    </div>
+
   </div>
 
-</div>
+  <script src="i18n.js"></script>
+  <script src="curricula.js"></script>
+  <script>
+    let currentStep = 1;
+    let selectedRole = 'tutor';
+    let selectedPedagogy = 'francophone';
 
-<script src="i18n.js"></script>
-<script src="curricula.js"></script>
-<script>
-  let currentStep = 1;
-  let selectedRole = 'tutor';
-  let selectedPedagogy = 'francophone';
+    const API_URL = 'http://localhost:5000/api';
 
-  const API_URL = 'http://localhost:5000/api';
-
-  // Extract parameters
-  const params = new URLSearchParams(window.location.search);
-  if (params.get('role')) {
-    selectRole(params.get('role'));
-  }
-
-  function switchAuthTab(tab) {
-    document.getElementById('tabSignup').classList.toggle('active', tab === 'signup');
-    document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
-    document.getElementById('signupFlow').style.display = tab === 'signup' ? 'block' : 'none';
-    document.getElementById('loginFlow').style.display = tab === 'login' ? 'block' : 'none';
-  }
-
-  function selectRole(role) {
-    selectedRole = role;
-    document.getElementById('roleBoxTutor').classList.toggle('active', role === 'tutor');
-    document.getElementById('roleBoxParent').classList.toggle('active', role === 'parent');
-    
-    // Update labels and badge
-    const badge = document.getElementById('roleBadge');
-    if (badge) {
-      badge.textContent = role === 'tutor' 
-        ? (window.currentLang === 'en' ? 'TUTOR' : 'RÉPÉTITEUR')
-        : (window.currentLang === 'en' ? 'PARENT' : 'PARENT');
+    // Extract parameters
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('role')) {
+      selectRole(params.get('role'));
     }
 
-    // Hide CV and Hourly Rate fields for Parent
-    document.getElementById('cvUploadContainer').style.display = role === 'tutor' ? 'block' : 'none';
-    document.getElementById('rateField').style.display = role === 'tutor' ? 'block' : 'none';
-    document.getElementById('pedagogyBothBtn').style.display = role === 'tutor' ? 'block' : 'none';
-    
-    if (role === 'parent' && selectedPedagogy === 'both') {
-      setPedagogy('francophone');
+    function switchAuthTab(tab) {
+      document.getElementById('tabSignup').classList.toggle('active', tab === 'signup');
+      document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
+      document.getElementById('signupFlow').style.display = tab === 'signup' ? 'block' : 'none';
+      document.getElementById('loginFlow').style.display = tab === 'login' ? 'block' : 'none';
     }
 
-    renderCatalog();
-  }
+    function selectRole(role) {
+      selectedRole = role;
+      document.getElementById('roleBoxTutor').classList.toggle('active', role === 'tutor');
+      document.getElementById('roleBoxParent').classList.toggle('active', role === 'parent');
 
-  function setPedagogy(ped) {
-    selectedPedagogy = ped;
-    const btns = document.querySelectorAll('#tutorPedagogySelector button');
-    btns[0].classList.toggle('active', ped === 'francophone');
-    btns[1].classList.toggle('active', ped === 'anglophone');
-    if (btns[2]) btns[2].classList.toggle('active', ped === 'both');
+      // Update labels and badge
+      const badge = document.getElementById('roleBadge');
+      if (badge) {
+        badge.textContent = role === 'tutor'
+          ? (window.currentLang === 'en' ? 'TUTOR' : 'RÉPÉTITEUR')
+          : (window.currentLang === 'en' ? 'PARENT' : 'PARENT');
+      }
 
-    renderCatalog();
-  }
+      // Hide CV and Hourly Rate fields for Parent
+      document.getElementById('cvUploadContainer').style.display = role === 'tutor' ? 'block' : 'none';
+      document.getElementById('rateField').style.display = role === 'tutor' ? 'block' : 'none';
+      document.getElementById('pedagogyBothBtn').style.display = role === 'tutor' ? 'block' : 'none';
 
-  function renderCatalog() {
-    const classContainer = document.getElementById('classList');
-    const subjectContainer = document.getElementById('subjectList');
+      if (role === 'parent' && selectedPedagogy === 'both') {
+        setPedagogy('francophone');
+      }
 
-    classContainer.innerHTML = '';
-    subjectContainer.innerHTML = '';
-
-    const catalogs = [];
-    if (selectedPedagogy === 'both') {
-      catalogs.push(curriculaCatalog.francophone);
-      catalogs.push(curriculaCatalog.anglophone);
-    } else {
-      catalogs.push(curriculaCatalog[selectedPedagogy]);
+      renderCatalog();
     }
 
-    // Render classes
-    catalogs.forEach(cat => {
-      cat.classes.forEach(c => {
-        const item = document.createElement('label');
-        item.className = 'catalog-item';
-        item.innerHTML = `<input type="checkbox" name="classes" value="${c.id}"> ${window.currentLang === 'en' ? c.name_en : c.name_fr}`;
-        classContainer.appendChild(item);
+    function setPedagogy(ped) {
+      selectedPedagogy = ped;
+      const btns = document.querySelectorAll('#tutorPedagogySelector button');
+      btns[0].classList.toggle('active', ped === 'francophone');
+      btns[1].classList.toggle('active', ped === 'anglophone');
+      if (btns[2]) btns[2].classList.toggle('active', ped === 'both');
+
+      renderCatalog();
+    }
+
+    function renderCatalog() {
+      const classContainer = document.getElementById('classList');
+      const subjectContainer = document.getElementById('subjectList');
+
+      classContainer.innerHTML = '';
+      subjectContainer.innerHTML = '';
+
+      const catalogs = [];
+      if (selectedPedagogy === 'both') {
+        catalogs.push(curriculaCatalog.francophone);
+        catalogs.push(curriculaCatalog.anglophone);
+      } else {
+        catalogs.push(curriculaCatalog[selectedPedagogy]);
+      }
+
+      // Render classes
+      catalogs.forEach(cat => {
+        cat.classes.forEach(c => {
+          const item = document.createElement('label');
+          item.className = 'catalog-item';
+          item.innerHTML = `<input type="checkbox" name="classes" value="${c.id}"> ${window.currentLang === 'en' ? c.name_en : c.name_fr}`;
+          classContainer.appendChild(item);
+        });
       });
-    });
 
-    // Render subjects
-    catalogs.forEach(cat => {
-      cat.subjects.forEach(s => {
-        const item = document.createElement('label');
-        item.className = 'catalog-item';
-        item.innerHTML = `<input type="checkbox" name="subjects" value="${s.id}"> ${window.currentLang === 'en' ? s.name_en : s.name_fr}`;
-        subjectContainer.appendChild(item);
+      // Render subjects
+      catalogs.forEach(cat => {
+        cat.subjects.forEach(s => {
+          const item = document.createElement('label');
+          item.className = 'catalog-item';
+          item.innerHTML = `<input type="checkbox" name="subjects" value="${s.id}"> ${window.currentLang === 'en' ? s.name_en : s.name_fr}`;
+          subjectContainer.appendChild(item);
+        });
       });
-    });
-  }
-
-  function displayFileName(inputId, targetId) {
-    const input = document.getElementById(inputId);
-    const target = document.getElementById(targetId);
-    if (input.files && input.files[0]) {
-      target.textContent = input.files[0].name;
     }
-  }
 
-  function goNext() {
-    if (currentStep < 4) {
-      document.getElementById(`stepSection${currentStep}`).style.display = 'none';
-      document.getElementById(`stepItem${currentStep}`).classList.add('done');
-      document.getElementById(`stepItem${currentStep}`).classList.remove('active');
-      currentStep++;
-      document.getElementById(`stepSection${currentStep}`).style.display = 'block';
-      document.getElementById(`stepItem${currentStep}`).classList.add('active');
-
-      document.getElementById('prevBtn').style.visibility = 'visible';
-      document.getElementById('stepProgress').style.width = `${(currentStep - 1) * 33.3}%`;
-
-      if (currentStep === 4) {
-        document.getElementById('nextBtn').style.display = 'none';
-        document.getElementById('submitBtn').style.display = 'inline-flex';
+    function displayFileName(inputId, targetId) {
+      const input = document.getElementById(inputId);
+      const target = document.getElementById(targetId);
+      if (input.files && input.files[0]) {
+        target.textContent = input.files[0].name;
       }
     }
-  }
 
-  function goBack() {
-    if (currentStep > 1) {
-      document.getElementById(`stepSection${currentStep}`).style.display = 'none';
-      document.getElementById(`stepItem${currentStep}`).classList.remove('active');
-      currentStep--;
-      document.getElementById(`stepSection${currentStep}`).style.display = 'block';
-      document.getElementById(`stepItem${currentStep}`).classList.add('active');
-      document.getElementById(`stepItem${currentStep}`).classList.remove('done');
+    function goNext() {
+      if (currentStep < 4) {
+        document.getElementById(`stepSection${currentStep}`).style.display = 'none';
+        document.getElementById(`stepItem${currentStep}`).classList.add('done');
+        document.getElementById(`stepItem${currentStep}`).classList.remove('active');
+        currentStep++;
+        document.getElementById(`stepSection${currentStep}`).style.display = 'block';
+        document.getElementById(`stepItem${currentStep}`).classList.add('active');
 
-      document.getElementById('stepProgress').style.width = `${(currentStep - 1) * 33.3}%`;
-      document.getElementById('nextBtn').style.display = 'inline-flex';
-      document.getElementById('submitBtn').style.display = 'none';
+        document.getElementById('prevBtn').style.visibility = 'visible';
+        document.getElementById('stepProgress').style.width = `${(currentStep - 1) * 33.3}%`;
 
-      if (currentStep === 1) {
-        document.getElementById('prevBtn').style.visibility = 'hidden';
+        if (currentStep === 4) {
+          document.getElementById('nextBtn').style.display = 'none';
+          document.getElementById('submitBtn').style.display = 'inline-flex';
+        }
       }
     }
-  }
 
-  // Handle Signup
-  async function handleWizardSubmit(e) {
-    e.preventDefault();
-    const firstName = document.getElementById('firstName').value;
-    const lastName = document.getElementById('lastName').value;
-    const phone = document.getElementById('phoneNumber').value;
-    const whatsapp = document.getElementById('whatsappNumber').value || phone;
-    
-    const classes = Array.from(document.querySelectorAll('input[name="classes"]:checked')).map(el => el.value);
-    const subjects = Array.from(document.querySelectorAll('input[name="subjects"]:checked')).map(el => el.value);
-    const rate = document.getElementById('hourlyRate').value || 0;
-    const city = document.getElementById('citySelect').value || 'Yaoundé';
-    const textBio = document.getElementById('bio').value || '';
-    const emailValue = document.getElementById('email').value;
-    const pwd = document.getElementById('password').value;
-    const pwdConfirm = document.getElementById('passwordConfirm').value;
+    function goBack() {
+      if (currentStep > 1) {
+        document.getElementById(`stepSection${currentStep}`).style.display = 'none';
+        document.getElementById(`stepItem${currentStep}`).classList.remove('active');
+        currentStep--;
+        document.getElementById(`stepSection${currentStep}`).style.display = 'block';
+        document.getElementById(`stepItem${currentStep}`).classList.add('active');
+        document.getElementById(`stepItem${currentStep}`).classList.remove('done');
 
-    if (pwd !== pwdConfirm) {
-      alert(window.currentLang === 'en' ? 'Passwords do not match!' : 'Les mots de passe ne correspondent pas !');
-      return;
+        document.getElementById('stepProgress').style.width = `${(currentStep - 1) * 33.3}%`;
+        document.getElementById('nextBtn').style.display = 'inline-flex';
+        document.getElementById('submitBtn').style.display = 'none';
+
+        if (currentStep === 1) {
+          document.getElementById('prevBtn').style.visibility = 'hidden';
+        }
+      }
     }
 
-    try {
-      // 1. Register Auth account
-      const authRes = await fetch(`${API_URL}/auth/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          username: emailValue.split('@')[0],
-          email: emailValue,
-          password: pwd,
-          role: selectedRole
-        })
-      });
+    // Handle Signup
+    async function handleWizardSubmit(e) {
+      e.preventDefault();
+      const firstName = document.getElementById('firstName').value;
+      const lastName = document.getElementById('lastName').value;
+      const phone = document.getElementById('phoneNumber').value;
+      const whatsapp = document.getElementById('whatsappNumber').value || phone;
 
-      const authData = await authRes.json();
-      if (!authRes.ok) throw new Error(authData.message);
+      const classes = Array.from(document.querySelectorAll('input[name="classes"]:checked')).map(el => el.value);
+      const subjects = Array.from(document.querySelectorAll('input[name="subjects"]:checked')).map(el => el.value);
+      const rate = document.getElementById('hourlyRate').value || 0;
+      const city = document.getElementById('citySelect').value || 'Yaoundé';
+      const textBio = document.getElementById('bio').value || '';
+      const emailValue = document.getElementById('email').value;
+      const pwd = document.getElementById('password').value;
+      const pwdConfirm = document.getElementById('passwordConfirm').value;
 
-      // Save token
-      localStorage.setItem('token', authData.token);
-      localStorage.setItem('user', JSON.stringify(authData));
+      if (pwd !== pwdConfirm) {
+        alert(window.currentLang === 'en' ? 'Passwords do not match!' : 'Les mots de passe ne correspondent pas !');
+        return;
+      }
 
-      if (selectedRole === 'tutor') {
-        // 2. Create profile
-        const profileRes = await fetch(`${API_URL}/profiles/`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${authData.token}`
-          },
+      try {
+        // 1. Register Auth account
+        const authRes = await fetch(`${API_URL}/auth/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            full_name: `${firstName} ${lastName}`,
-            bio: textBio,
-            pedagogy: selectedPedagogy,
-            classes: classes,
-            subjects: subjects,
-            hourly_rate: parseInt(rate),
-            whatsapp_number: whatsapp,
-            experience_years: 1,
-            city: city
+            username: emailValue.split('@')[0],
+            email: emailValue,
+            password: pwd,
+            role: selectedRole
           })
         });
 
-        const profileData = await profileRes.json();
-        if (!profileRes.ok) throw new Error(profileData.message);
+        const authData = await authRes.json();
+        if (!authRes.ok) throw new Error(authData.message);
 
-        // 3. Upload CV
-        const cvFile = document.getElementById('cvInput').files[0];
-        if (cvFile) {
-          const cvFormData = new FormData();
-          cvFormData.append('cv', cvFile);
-          
-          await fetch(`${API_URL}/profiles/upload-cv`, {
+        // Save token
+        localStorage.setItem('token', authData.token);
+        localStorage.setItem('user', JSON.stringify(authData));
+
+        if (selectedRole === 'tutor') {
+          // 2. Create profile
+          const profileRes = await fetch(`${API_URL}/profiles/`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${authData.token}`
+            },
+            body: JSON.stringify({
+              full_name: `${firstName} ${lastName}`,
+              bio: textBio,
+              pedagogy: selectedPedagogy,
+              classes: classes,
+              subjects: subjects,
+              hourly_rate: parseInt(rate),
+              whatsapp_number: whatsapp,
+              experience_years: 1,
+              city: city
+            })
+          });
+
+          const profileData = await profileRes.json();
+          if (!profileRes.ok) throw new Error(profileData.message);
+
+          // 3. Upload CV
+          const cvFile = document.getElementById('cvInput').files[0];
+          if (cvFile) {
+            const cvFormData = new FormData();
+            cvFormData.append('cv', cvFile);
+
+            await fetch(`${API_URL}/profiles/upload-cv`, {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${authData.token}` },
+              body: cvFormData
+            });
+          }
+        } else {
+          // Create initial job requirement for parent
+          await fetch(`${API_URL}/jobs/`, {
             method: 'POST',
-            headers: { 'Authorization': `Bearer ${authData.token}` },
-            body: cvFormData
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${authData.token}`
+            },
+            body: JSON.stringify({
+              title: `Besoin de répétiteur par ${firstName}`,
+              description: `Recherche d'un tuteur de niveau pour encadrement scolaire.`,
+              location: city,
+              pedagogy: selectedPedagogy,
+              class_level: classes[0] || '6eme',
+              expected_wages: parseInt(rate) || 30000,
+              subjects: subjects,
+              whatsapp_number: whatsapp
+            })
           });
         }
-      } else {
-        // Create initial job requirement for parent
-        await fetch(`${API_URL}/jobs/`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${authData.token}`
-          },
-          body: JSON.stringify({
-            title: `Besoin de répétiteur par ${firstName}`,
-            description: `Recherche d'un tuteur de niveau pour encadrement scolaire.`,
-            location: city,
-            pedagogy: selectedPedagogy,
-            class_level: classes[0] || '6eme',
-            expected_wages: parseInt(rate) || 30000,
-            subjects: subjects,
-            whatsapp_number: whatsapp
-          })
-        });
+
+        alert(window.currentLang === 'en' ? 'Profile created successfully!' : 'Profil créé avec succès !');
+        window.location.href = 'dashboard.html';
+
+      } catch (err) {
+        alert('Error: ' + err.message);
       }
-
-      alert(window.currentLang === 'en' ? 'Profile created successfully!' : 'Profil créé avec succès !');
-      window.location.href = 'dashboard.html';
-
-    } catch (err) {
-      alert('Error: ' + err.message);
     }
-  }
 
-  // Handle Login
-  async function handleLoginSubmit(e) {
-    e.preventDefault();
-    const emailVal = document.getElementById('loginEmail').value;
-    const pwdVal = document.getElementById('loginPassword').value;
+    // Handle Login
+    async function handleLoginSubmit(e) {
+      e.preventDefault();
+      const emailVal = document.getElementById('loginEmail').value;
+      const pwdVal = document.getElementById('loginPassword').value;
 
-    try {
-      const res = await fetch(`${API_URL}/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: emailVal, password: pwdVal })
-      });
+      try {
+        const res = await fetch(`${API_URL}/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: emailVal, password: pwdVal })
+        });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message);
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message);
 
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data));
-      window.location.href = 'dashboard.html';
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data));
+        window.location.href = 'dashboard.html';
 
-    } catch (err) {
-      alert('Error: ' + err.message);
+      } catch (err) {
+        alert('Error: ' + err.message);
+      }
     }
-  }
 
-  // Initialize
-  renderCatalog();
-</script>
+    // Initialize
+    renderCatalog();
+  </script>
 </body>
+
 </html>
