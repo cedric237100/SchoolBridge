@@ -52,6 +52,10 @@ const Profile = sequelize.define('Profile', {
     is_premium: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
+    },
+    city: {
+        type: DataTypes.STRING,
+        defaultValue: 'Yaoundé'
     }
 }, {
     underscored: true

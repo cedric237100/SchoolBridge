@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SchoolBridge — Mon Tableau de bord</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
   <style>
     :root {
       --primary: #0F6A3B;
@@ -17,12 +20,14 @@
       --muted: #64748B;
       --card: #FFFFFF;
       --border: #E2E8F0;
-      --shadow-sm: 0 2px 4px rgba(0,0,0,0.02);
-      --shadow-md: 0 4px 20px rgba(0,0,0,0.05);
+      --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.02);
+      --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.05);
       --shadow-lg: 0 10px 35px rgba(15, 106, 59, 0.05);
     }
 
-    *, *::before, *::after {
+    *,
+    *::before,
+    *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
@@ -117,9 +122,16 @@
       transition: all 0.2s;
     }
 
-    .menu-item:hover, .menu-item.active {
+    .menu-item:hover,
+    .menu-item.active {
       color: var(--primary);
       background: rgba(15, 106, 59, 0.06);
+    }
+
+    .sidebar-version {
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-align: center;
     }
 
     /* Content Area */
@@ -206,6 +218,14 @@
       font-size: 0.8rem;
     }
 
+    .btn-full {
+      width: 100%;
+    }
+
+    .btn-pad-lg {
+      padding: 1rem;
+    }
+
     /* Recommendation grids */
     .grid-container {
       display: grid;
@@ -260,6 +280,54 @@
       font-weight: 700;
       padding: 0.2rem 0.6rem;
       border-radius: 4px;
+    }
+
+    .premium-status {
+      margin-left: 1rem;
+      font-weight: 700;
+      color: var(--primary);
+      display: none;
+    }
+
+    .premium-alert-box {
+      background: linear-gradient(135deg, rgba(252, 209, 22, 0.12) 0%, rgba(15, 106, 59, 0.04) 100%);
+      border: 1.5px solid var(--secondary);
+      border-radius: 16px;
+      padding: 1.8rem;
+      margin-bottom: 2.5rem;
+      display: none;
+    }
+
+    .premium-alert-box h3 {
+      color: #7d5e00;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.15rem;
+    }
+
+    .premium-alert-box p {
+      font-size: 0.9rem;
+      color: var(--text);
+      margin-bottom: 1.2rem;
+      font-weight: 500;
+    }
+
+    .premium-alert-box ul {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+      list-style-position: inside;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+    }
+
+    .recs-header {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      margin-bottom: 1.5rem;
     }
 
     .rec-title {
@@ -331,7 +399,7 @@
       width: 90%;
       max-width: 500px;
       padding: 2.5rem;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
       position: relative;
     }
 
@@ -356,6 +424,10 @@
       flex-direction: column;
       gap: 0.4rem;
       margin-bottom: 1.2rem;
+    }
+
+    .form-field textarea {
+      min-height: 60px;
     }
 
     .checkbox-grid {
@@ -404,249 +476,286 @@
       height: auto;
     }
 
+    .pay-modal-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .momo-option-mtn {
+      font-weight: 800;
+      color: #FCD116;
+    }
+
+    .momo-option-orange {
+      font-weight: 800;
+      color: #E01A22;
+    }
+
     @media (max-width: 800px) {
       .dashboard-layout {
         grid-template-columns: 1fr;
       }
+
       .sidebar {
         display: none;
       }
+
       .main-content {
         padding: 1.5rem;
       }
     }
   </style>
 </head>
+
 <body>
 
-<nav>
-  <a href="index.html" class="logo">School<span>Bridge</span></a>
-  <div class="nav-right">
-    <select id="langSwitch" class="lang-select" title="Change Language" aria-label="Change Language">
-      <option value="fr">🇫🇷 FR</option>
-      <option value="en">🇺🇸 EN</option>
-    </select>
-    <button class="btn btn-danger btn-sm" onclick="logout()" data-i18n="nav.logout">Déconnexion</button>
-  </div>
-</nav>
-
-<div class="dashboard-layout">
-  <!-- Sidebar menu -->
-  <aside class="sidebar">
-    <div class="sidebar-menu">
-      <div class="menu-item active" onclick="showTab('recs')">
-        <span>🎯</span>
-        <span data-i18n="nav.tutors">Recommandations</span>
-      </div>
-      <div class="menu-item" id="sidebarPostMenu" onclick="openJobModal()" style="display:none">
-        <span>➕</span>
-        <span data-i18n="dash.postJob">Publier besoin</span>
-      </div>
-      <div class="menu-item" id="sidebarPremiumMenu" onclick="openPremiumModal()" style="display:none">
-        <span>⭐</span>
-        <span data-i18n="dash.premiumBtn">Go Premium</span>
-      </div>
+  <nav>
+    <a href="index.html" class="logo">School<span>Bridge</span></a>
+    <div class="nav-right">
+      <select id="langSwitch" class="lang-select" title="Change Language" aria-label="Change Language">
+        <option value="fr">🇫🇷 FR</option>
+        <option value="en">🇺🇸 EN</option>
+      </select>
+      <button type="button" class="btn btn-danger btn-sm" onclick="logout()" data-i18n="nav.logout">Déconnexion</button>
     </div>
-    <div style="font-size:0.75rem; color:var(--muted); text-align:center;">
-      SchoolBridge Dashboard v2.0
-    </div>
-  </aside>
+  </nav>
 
-  <!-- Main panel -->
-  <main class="main-content">
-    <div class="welcome-header">
-      <div>
-        <h1 class="welcome-title"><span data-i18n="dash.welcome">Bienvenue,</span> <span id="usernameVal">Utilisateur</span>!</h1>
-        <div class="welcome-sub">
-          <span data-i18n="dash.role">Rôle</span>: <strong id="roleVal" data-i18n="dash.tutor">Répétiteur</strong>
-          <span id="premiumStatus" style="margin-left: 1rem; font-weight:700; color:var(--primary); display:none;" data-i18n="dash.premiumActive">⭐ Premium Active</span>
+  <div class="dashboard-layout">
+    <!-- Sidebar menu -->
+    <aside class="sidebar">
+      <div class="sidebar-menu">
+        <div class="menu-item active" onclick="showTab('recs')">
+          <span>🎯</span>
+          <span data-i18n="nav.tutors">Recommandations</span>
+        </div>
+        <div class="menu-item" id="sidebarPostMenu" onclick="openJobModal()" style="display:none">
+          <span>➕</span>
+          <span data-i18n="dash.postJob">Publier besoin</span>
+        </div>
+        <div class="menu-item" id="sidebarPremiumMenu" onclick="openPremiumModal()" style="display:none">
+          <span>⭐</span>
+          <span data-i18n="dash.premiumBtn">Go Premium</span>
+        </div>
+      </div>
+      <div class="sidebar-version">
+        SchoolBridge Dashboard v2.0
+      </div>
+    </aside>
+
+    <!-- Main panel -->
+    <main class="main-content">
+      <div class="welcome-header">
+        <div>
+          <h1 class="welcome-title"><span data-i18n="dash.welcome">Bienvenue,</span> <span
+              id="usernameVal">Utilisateur</span>!</h1>
+          <div class="welcome-sub">
+            <span data-i18n="dash.role">Rôle</span>: <strong id="roleVal" data-i18n="dash.tutor">Répétiteur</strong>
+            <span id="premiumStatus" class="premium-status" data-i18n="dash.premiumActive">⭐ Premium Active</span>
+          </div>
+        </div>
+
+        <div id="actionBtnArea">
+          <!-- Dynamic actions based on role -->
         </div>
       </div>
 
-      <div id="actionBtnArea">
-        <!-- Dynamic actions based on role -->
+      <!-- Premium Reminder Alert Box -->
+      <div id="premiumAlertBox" class="premium-alert-box">
+        <h3 data-i18n="premium.reminder.title">Why Upgrade to Premium? 🚀</h3>
+        <p data-i18n="premium.reminder.desc">Boost your chances of getting hired by families in Cameroon!</p>
+        <ul>
+          <li data-i18n="premium.reminder.item1">Priority placement at the top of parent recommendation feeds</li>
+          <li data-i18n="premium.reminder.item2">Trusted premium educator badge with gold star</li>
+          <li data-i18n="premium.reminder.item3">Direct WhatsApp contact button open to parents</li>
+          <li data-i18n="premium.reminder.item4">Instant email alerts for new matching student needs</li>
+        </ul>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="openPremiumModal()"
+          data-i18n="dash.premiumBtn">Go Premium (3,000 CFA)</button>
       </div>
-    </div>
 
-    <!-- Recommendations Feed -->
-    <div>
-      <h2 id="recsHeader" style="font-family:'Playfair Display',serif; font-size:1.4rem; margin-bottom:1.5rem;" data-i18n="dash.recsTitleTutor">Recommendations de cours</h2>
-      <div class="grid-container" id="recsFeed">
-        <p data-i18n="dash.noRecs">Chargement...</p>
+      <!-- Recommendations Feed -->
+      <div>
+        <h2 id="recsHeader" class="recs-header" data-i18n="dash.recsTitleTutor">Recommendations de cours</h2>
+        <div class="grid-container" id="recsFeed">
+          <p data-i18n="dash.noRecs">Chargement...</p>
+        </div>
       </div>
-    </div>
-  </main>
-</div>
-
-<!-- JOB POST MODAL (Parents) -->
-<div class="modal-backdrop" id="jobModal" style="display:none">
-  <div class="modal-box">
-    <span class="modal-close" onclick="closeJobModal()">&times;</span>
-    <h3 class="modal-title" data-i18n="dash.postJob">Publier un besoin</h3>
-    <form onsubmit="handleJobSubmit(event)">
-      <div class="form-field">
-        <label>Titre de la demande</label>
-        <input type="text" id="jobTitle" required placeholder="Ex: Répétiteur Maths classe de Terminale">
-      </div>
-      <div class="form-field">
-        <label>Description des besoins</label>
-        <textarea id="jobDesc" placeholder="Besoin de suivi intensif..." style="min-height:60px;"></textarea>
-      </div>
-      <div class="form-field">
-        <label>Pédagogie</label>
-        <select id="jobPedagogy" onchange="renderJobCatalogSelects()">
-          <option value="francophone">Francophone</option>
-          <option value="anglophone">Anglophone</option>
-        </select>
-      </div>
-      <div class="form-field">
-        <label>Classe</label>
-        <select id="jobClassSelect" required></select>
-      </div>
-      <div class="form-field">
-        <label>Matières souhaitées</label>
-        <div class="checkbox-grid" id="jobSubjectList"></div>
-      </div>
-      <div class="form-field">
-        <label>Lieu / Quartier, Ville</label>
-        <input type="text" id="jobLocation" required placeholder="Ex: Bastos, Yaoundé">
-      </div>
-      <div class="form-field">
-        <label>WhatsApp / Téléphone</label>
-        <input type="tel" id="jobPhone" required placeholder="6XX XXX XXX">
-      </div>
-      <div class="form-field">
-        <label>Wages attendus / Budget Mensuel (CFA)</label>
-        <input type="number" id="jobWages" required value="40000">
-      </div>
-      <button type="submit" class="btn btn-primary" style="width:100%;" data-i18n="dash.postJob">Publier le besoin</button>
-    </form>
+    </main>
   </div>
-</div>
 
-<!-- MONETIZATION PAYMENT MODAL -->
-<div class="modal-backdrop" id="payModal" style="display:none">
-  <div class="modal-box">
-    <span class="modal-close" onclick="closePayModal()">&times;</span>
-    <h3 class="modal-title" id="payModalTitle">Simuler le Paiement</h3>
-    <p id="payModalDesc" style="font-size:0.9rem; color:var(--muted); margin-bottom:1.5rem;">Frais de transaction requis</p>
-    
-    <div class="momo-brand">
-      <div class="momo-option active" id="momoMtn" onclick="selectMomo('mtn')">
-        <div style="font-weight:800;color:#FCD116;">MTN MoMo</div>
-      </div>
-      <div class="momo-option" id="momoOrange" onclick="selectMomo('orange')">
-        <div style="font-weight:800;color:#E01A22;">Orange</div>
-      </div>
+  <!-- JOB POST MODAL (Parents) -->
+  <div class="modal-backdrop" id="jobModal" style="display:none">
+    <div class="modal-box">
+      <span class="modal-close" onclick="closeJobModal()">&times;</span>
+      <h3 class="modal-title" data-i18n="dash.postJob">Publier un besoin</h3>
+      <form onsubmit="handleJobSubmit(event)">
+        <div class="form-field">
+          <label>Titre de la demande</label>
+          <input type="text" id="jobTitle" required placeholder="Ex: Répétiteur Maths classe de Terminale">
+        </div>
+        <div class="form-field">
+          <label>Description des besoins</label>
+          <textarea id="jobDesc" placeholder="Besoin de suivi intensif..."></textarea>
+        </div>
+        <div class="form-field">
+          <label>Pédagogie</label>
+          <select id="jobPedagogy" onchange="renderJobCatalogSelects()">
+            <option value="francophone">Francophone</option>
+            <option value="anglophone">Anglophone</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Classe</label>
+          <select id="jobClassSelect" required></select>
+        </div>
+        <div class="form-field">
+          <label>Matières souhaitées</label>
+          <div class="checkbox-grid" id="jobSubjectList"></div>
+        </div>
+        <div class="form-field">
+          <label>Lieu / Quartier, Ville</label>
+          <input type="text" id="jobLocation" required placeholder="Ex: Bastos, Yaoundé">
+        </div>
+        <div class="form-field">
+          <label>WhatsApp / Téléphone</label>
+          <input type="tel" id="jobPhone" required placeholder="6XX XXX XXX">
+        </div>
+        <div class="form-field">
+          <label>Wages attendus / Budget Mensuel (CFA)</label>
+          <input type="number" id="jobWages" required value="40000">
+        </div>
+        <button type="submit" class="btn btn-primary btn-full" data-i18n="dash.postJob">Publier le besoin</button>
+      </form>
     </div>
-
-    <form onsubmit="handlePaymentSubmit(event)">
-      <div class="form-field">
-        <label>Numéro Mobile Money (MTN/Orange)</label>
-        <input type="tel" id="payPhoneNumber" required placeholder="6XX XXX XXX">
-      </div>
-      <button type="submit" class="btn btn-secondary" style="width:100%;padding:1rem;">Confirmer le Paiement (CFA)</button>
-    </form>
   </div>
-</div>
 
-<script src="i18n.js"></script>
-<script src="curricula.js"></script>
-<script>
-  const token = localStorage.getItem('token');
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  <!-- MONETIZATION PAYMENT MODAL -->
+  <div class="modal-backdrop" id="payModal" style="display:none">
+    <div class="modal-box">
+      <span class="modal-close" onclick="closePayModal()">&times;</span>
+      <h3 class="modal-title" id="payModalTitle">Simuler le Paiement</h3>
+      <p id="payModalDesc" class="pay-modal-desc">Frais de transaction requis</p>
+      <div class="momo-brand">
+        <div class="momo-option active" id="momoMtn" onclick="selectMomo('mtn')">
+          <div class="momo-option-mtn">MTN MoMo</div>
+        </div>
+        <div class="momo-option" id="momoOrange" onclick="selectMomo('orange')">
+          <div class="momo-option-orange">Orange</div>
+        </div>
+      </div>
 
-  let activeMomo = 'mtn';
-  let paymentMeta = {}; // stores details of current payment: type, jobId
+      <form onsubmit="handlePaymentSubmit(event)">
+        <div class="form-field">
+          <label>Numéro Mobile Money (MTN/Orange)</label>
+          <input type="tel" id="payPhoneNumber" required placeholder="6XX XXX XXX">
+        </div>
+        <button type="submit" class="btn btn-secondary btn-full btn-pad-lg">Confirmer le Paiement (CFA)</button>
+      </form>
+    </div>
+  </div>
 
-  if (!token) {
-    window.location.href = 'inscription.html';
-  }
+  <script src="i18n.js"></script>
+  <script src="curricula.js"></script>
+  <script>
+    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
 
-  document.getElementById('usernameVal').textContent = user.username;
-  document.getElementById('roleVal').textContent = user.role === 'tutor' 
-    ? (window.currentLang === 'en' ? 'Tutor' : 'Répétiteur')
-    : (window.currentLang === 'en' ? 'Parent' : 'Parent');
+    let activeMomo = 'mtn';
+    let paymentMeta = {}; // stores details of current payment: type, jobId
 
-  const API_URL = 'http://localhost:5000/api';
-
-  // Customize UI based on Role
-  if (user.role === 'parent') {
-    document.getElementById('sidebarPostMenu').style.display = 'flex';
-    document.getElementById('recsHeader').setAttribute('data-i18n', 'dash.recsTitleParent');
-    document.getElementById('actionBtnArea').innerHTML = `
-      <button class="btn btn-primary" onclick="openJobModal()" data-i18n="dash.postJob">Publier un besoin</button>
-    `;
-  } else {
-    document.getElementById('sidebarPremiumMenu').style.display = 'flex';
-    document.getElementById('recsHeader').setAttribute('data-i18n', 'dash.recsTitleTutor');
-    document.getElementById('actionBtnArea').innerHTML = `
-      <button class="btn btn-secondary" id="premiumBtnHeader" onclick="openPremiumModal()" data-i18n="dash.premiumBtn">Devenir Premium (3 000 CFA)</button>
-    `;
-    checkPremiumStatus();
-  }
-
-  async function checkPremiumStatus() {
-    try {
-      const res = await fetch(`${API_URL}/profiles/`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const profiles = await res.json();
-      const myProfile = profiles.find(p => p.user_id === user.id);
-      if (myProfile && myProfile.is_premium) {
-        document.getElementById('premiumStatus').style.display = 'inline-block';
-        const pBtn = document.getElementById('premiumBtnHeader');
-        if (pBtn) pBtn.style.display = 'none';
-      }
-    } catch (e) {
-      console.log("Error checking premium status: ", e);
+    if (!token) {
+      window.location.href = 'inscription.html';
     }
-  }
 
-  function logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    window.location.href = 'index.html';
-  }
+    document.getElementById('usernameVal').textContent = user.username;
+    document.getElementById('roleVal').textContent = user.role === 'tutor'
+      ? (window.currentLang === 'en' ? 'Tutor' : 'Répétiteur')
+      : (window.currentLang === 'en' ? 'Parent' : 'Parent');
 
-  // Load recommendations
-  async function loadRecommendations() {
-    try {
-      const endpoint = user.role === 'tutor' 
-        ? `${API_URL}/jobs/recommendations/tutor`
-        : `${API_URL}/jobs/recommendations/parent`;
+    const API_URL = 'http://localhost:5000/api';
 
-      const res = await fetch(endpoint, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const data = await res.json();
-      
-      const feed = document.getElementById('recsFeed');
-      feed.innerHTML = '';
+    // Customize UI based on Role
+    if (user.role === 'parent') {
+      document.getElementById('sidebarPostMenu').style.display = 'flex';
+      document.getElementById('recsHeader').setAttribute('data-i18n', 'dash.recsTitleParent');
+      document.getElementById('actionBtnArea').innerHTML = `
+      <button type="button" class="btn btn-primary" onclick="openJobModal()" data-i18n="dash.postJob">Publier un besoin</button>
+    `;
+    } else {
+      document.getElementById('sidebarPremiumMenu').style.display = 'flex';
+      document.getElementById('recsHeader').setAttribute('data-i18n', 'dash.recsTitleTutor');
+      document.getElementById('actionBtnArea').innerHTML = `
+      <button type="button" class="btn btn-secondary" id="premiumBtnHeader" onclick="openPremiumModal()" data-i18n="dash.premiumBtn">Devenir Premium (3 000 CFA)</button>
+    `;
+      checkPremiumStatus();
+    }
 
-      if (!res.ok) {
-        feed.innerHTML = `<p style="color:var(--danger)">Failed to load recommendations: ${data.message}</p>`;
-        return;
+    async function checkPremiumStatus() {
+      try {
+        const res = await fetch(`${API_URL}/profiles/`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const profiles = await res.json();
+        const myProfile = profiles.find(p => p.user_id === user.id);
+        if (myProfile && myProfile.is_premium) {
+          document.getElementById('premiumStatus').style.display = 'inline-block';
+          const pBtn = document.getElementById('premiumBtnHeader');
+          if (pBtn) pBtn.style.display = 'none';
+          document.getElementById('premiumAlertBox').style.display = 'none';
+        } else {
+          document.getElementById('premiumAlertBox').style.display = 'block';
+        }
+      } catch (e) {
+        console.log("Error checking premium status: ", e);
       }
+    }
 
-      if (!data || data.length === 0) {
-        feed.innerHTML = `<p data-i18n="dash.noRecs">Aucune recommandation disponible pour le moment. Veuillez mettre à jour vos compétences.</p>`;
-        window.updateLanguage();
-        return;
-      }
+    function logout() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = 'index.html';
+    }
 
-      data.forEach(item => {
-        const card = document.createElement('div');
-        card.className = `rec-card ${item.is_featured ? 'featured' : ''}`;
+    // Load recommendations
+    async function loadRecommendations() {
+      try {
+        const endpoint = user.role === 'tutor'
+          ? `${API_URL}/jobs/recommendations/tutor`
+          : `${API_URL}/jobs/recommendations/parent`;
 
-        if (user.role === 'tutor') {
-          // Parent's job demand
-          card.innerHTML = `
+        const res = await fetch(endpoint, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+
+        const feed = document.getElementById('recsFeed');
+        feed.innerHTML = '';
+
+        if (!res.ok) {
+          feed.innerHTML = `<p style="color:var(--text)" data-i18n="dash.noRecsYet">no recommendation yet</p>`;
+          window.updateLanguage();
+          return;
+        }
+
+        if (!data || data.length === 0) {
+          feed.innerHTML = `<p style="color:var(--text)" data-i18n="dash.noRecsYet">no recommendation yet</p>`;
+          window.updateLanguage();
+          return;
+        }
+
+        data.forEach(item => {
+          const card = document.createElement('div');
+          card.className = `rec-card ${item.is_featured ? 'featured' : ''}`;
+
+          if (user.role === 'tutor') {
+            // Parent's job demand
+            card.innerHTML = `
             ${item.is_featured ? `<span class="featured-label">Featured</span>` : ''}
             <div>
               <h3 class="rec-title">${item.title}</h3>
               <p class="rec-location">📍 ${item.location}</p>
-              <p style="font-size:0.85rem; color:var(--muted);">${item.description || ''}</p>
+              <p style="font-size:0.85rem; color:var(--muted);" data-translate-dynamic data-original-text="${item.description || ''}">${item.description || ''}</p>
               <div class="rec-tags">
                 <span class="tag pedagogy">${window.getCurriculumName(item.class_level, item.pedagogy, window.currentLang)}</span>
                 ${(item.subjects || []).map(s => `<span class="tag">${window.getCurriculumName(s, item.pedagogy, window.currentLang)}</span>`).join('')}
@@ -659,15 +768,15 @@
               </div>
             </div>
           `;
-        } else {
-          // Tutor Profile recommendation
-          const isTutorPremium = item.is_premium;
-          card.innerHTML = `
+          } else {
+            // Tutor Profile recommendation
+            const isTutorPremium = item.is_premium;
+            card.innerHTML = `
             ${isTutorPremium ? `<span class="premium-label">⭐ Premium Tutor</span>` : ''}
             <div>
               <h3 class="rec-title">${item.full_name || 'Enseignant Qualifié'}</h3>
-              <p class="rec-location">📍 Expérience: ${item.experience_years || 1} ans</p>
-              <p style="font-size:0.85rem; color:var(--muted);">${item.bio || ''}</p>
+              <p class="rec-location">📍 ${item.city || 'Yaoundé'} · Expérience: ${item.experience_years || 1} ans</p>
+              <p style="font-size:0.85rem; color:var(--muted);" data-translate-dynamic data-original-text="${item.bio || ''}">${item.bio || ''}</p>
               <div class="rec-tags">
                 <span class="tag pedagogy">${item.pedagogy === 'both' ? 'FR + EN' : item.pedagogy}</span>
                 ${(item.subjects || []).map(s => `<span class="tag">${window.getCurriculumName(s, item.pedagogy === 'both' ? 'francophone' : item.pedagogy, window.currentLang)}</span>`).join('')}
@@ -676,181 +785,184 @@
             <div class="rec-meta">
               <div style="display:flex; justify-content:space-between; align-items:center;">
                 <div>Tarif: <span>${item.hourly_rate} CFA/heure</span></div>
-                <button class="btn btn-primary btn-sm" onclick="hireTutor('${item.whatsapp_number || ''}', ${isTutorPremium})">Recruter</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="hireTutor('${item.whatsapp_number || ''}', ${isTutorPremium})">Recruter</button>
               </div>
             </div>
           `;
+          }
+
+          feed.appendChild(card);
+        });
+
+        await window.updateLanguage();
+
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function hireTutor(whatsapp, isPremium) {
+      if (isPremium) {
+        alert((window.currentLang === 'en' ? 'Tutor hired! Direct WhatsApp opened: ' : 'Répétiteur recruté ! Lien WhatsApp direct ouvert : ') + whatsapp);
+        window.open(`https://wa.me/${whatsapp}`, '_blank');
+      } else {
+        alert(window.currentLang === 'en'
+          ? 'Tutor verification pending. You can contact them later.'
+          : 'Recrutement réussi ! Le profil du répétiteur est en attente de vérification complète.');
+      }
+    }
+
+    // Modals management
+    function openJobModal() {
+      document.getElementById('jobModal').style.display = 'flex';
+      renderJobCatalogSelects();
+    }
+
+    function closeJobModal() {
+      document.getElementById('jobModal').style.display = 'none';
+    }
+
+    function openPremiumModal() {
+      document.getElementById('payModal').style.display = 'flex';
+      document.getElementById('payModalTitle').textContent = window.currentLang === 'en' ? 'Get Premium Status' : 'Devenir Répétiteur Premium';
+      document.getElementById('payModalDesc').textContent = (window.currentLang === 'en' ? 'Fee: 3,000 CFA' : 'Frais de transaction : 3 000 CFA');
+      paymentMeta = { type: 'premium' };
+    }
+
+    function openFeaturedModal(jobId) {
+      document.getElementById('payModal').style.display = 'flex';
+      document.getElementById('payModalTitle').textContent = window.currentLang === 'en' ? 'Feature Job Posting' : 'Mettre en avant votre besoin';
+      document.getElementById('payModalDesc').textContent = (window.currentLang === 'en' ? 'Fee: 1,500 CFA' : 'Frais de transaction : 1 500 CFA');
+      paymentMeta = { type: 'featured', jobId: jobId };
+    }
+
+    function closePayModal() {
+      document.getElementById('payModal').style.display = 'none';
+    }
+
+    function selectMomo(brand) {
+      activeMomo = brand;
+      document.getElementById('momoMtn').classList.toggle('active', brand === 'mtn');
+      document.getElementById('momoOrange').classList.toggle('active', brand === 'orange');
+    }
+
+    // Render parent catalog lists in form
+    function renderJobCatalogSelects() {
+      const ped = document.getElementById('jobPedagogy').value;
+      const classSelect = document.getElementById('jobClassSelect');
+      const subContainer = document.getElementById('jobSubjectList');
+
+      classSelect.innerHTML = '';
+      subContainer.innerHTML = '';
+
+      const cat = curriculaCatalog[ped];
+
+      cat.classes.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.id;
+        opt.textContent = window.currentLang === 'en' ? c.name_en : c.name_fr;
+        classSelect.appendChild(opt);
+      });
+
+      cat.subjects.forEach(s => {
+        const item = document.createElement('label');
+        item.className = 'checkbox-item';
+        item.innerHTML = `<input type="checkbox" name="jobSubjects" value="${s.id}"> ${window.currentLang === 'en' ? s.name_en : s.name_fr}`;
+        subContainer.appendChild(item);
+      });
+    }
+
+    // Handle parent posting a job
+    async function handleJobSubmit(e) {
+      e.preventDefault();
+      const title = document.getElementById('jobTitle').value;
+      const desc = document.getElementById('jobDesc').value;
+      const ped = document.getElementById('jobPedagogy').value;
+      const cl = document.getElementById('jobClassSelect').value;
+      const loc = document.getElementById('jobLocation').value;
+      const phone = document.getElementById('jobPhone').value;
+      const wages = document.getElementById('jobWages').value;
+      const subs = Array.from(document.querySelectorAll('input[name="jobSubjects"]:checked')).map(el => el.value);
+
+      try {
+        const res = await fetch(`${API_URL}/jobs/`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            title,
+            description: desc,
+            location: loc,
+            pedagogy: ped,
+            class_level: cl,
+            expected_wages: parseInt(wages),
+            subjects: subs,
+            whatsapp_number: phone
+          })
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message);
+
+        closeJobModal();
+
+        // Offer parent to feature the job posting
+        const feature = confirm(window.currentLang === 'en'
+          ? "Do you want to bump/feature your posting for 1,500 CFA so it's placed first?"
+          : "Voulez-vous mettre en avant votre annonce pour 1 500 CFA afin d'être visible en premier par les tuteurs ?");
+
+        if (feature) {
+          openFeaturedModal(data.id);
+        } else {
+          loadRecommendations();
         }
 
-        feed.appendChild(card);
-      });
-
-    } catch (err) {
-      console.error(err);
+      } catch (err) {
+        alert('Error: ' + err.message);
+      }
     }
-  }
 
-  function hireTutor(whatsapp, isPremium) {
-    if (isPremium) {
-      alert((window.currentLang === 'en' ? 'Tutor hired! Direct WhatsApp opened: ' : 'Répétiteur recruté ! Lien WhatsApp direct ouvert : ') + whatsapp);
-      window.open(`https://wa.me/${whatsapp}`, '_blank');
-    } else {
-      alert(window.currentLang === 'en' 
-        ? 'Tutor verification pending. You can contact them later.'
-        : 'Recrutement réussi ! Le profil du répétiteur est en attente de vérification complète.');
-    }
-  }
+    // Handle Mock Mobile Money Payment
+    async function handlePaymentSubmit(e) {
+      e.preventDefault();
+      const phone = document.getElementById('payPhoneNumber').value;
 
-  // Modals management
-  function openJobModal() {
-    document.getElementById('jobModal').style.display = 'flex';
-    renderJobCatalogSelects();
-  }
+      // Call the payment simulation route
+      try {
+        const res = await fetch(`${API_URL}/jobs/pay`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            type: paymentMeta.type,
+            jobId: paymentMeta.jobId,
+            phoneNumber: phone
+          })
+        });
 
-  function closeJobModal() {
-    document.getElementById('jobModal').style.display = 'none';
-  }
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message);
 
-  function openPremiumModal() {
-    document.getElementById('payModal').style.display = 'flex';
-    document.getElementById('payModalTitle').textContent = window.currentLang === 'en' ? 'Get Premium Status' : 'Devenir Répétiteur Premium';
-    document.getElementById('payModalDesc').textContent = (window.currentLang === 'en' ? 'Fee: 3,000 CFA' : 'Frais de transaction : 3 000 CFA');
-    paymentMeta = { type: 'premium' };
-  }
+        alert(data.message);
+        closePayModal();
 
-  function openFeaturedModal(jobId) {
-    document.getElementById('payModal').style.display = 'flex';
-    document.getElementById('payModalTitle').textContent = window.currentLang === 'en' ? 'Feature Job Posting' : 'Mettre en avant votre besoin';
-    document.getElementById('payModalDesc').textContent = (window.currentLang === 'en' ? 'Fee: 1,500 CFA' : 'Frais de transaction : 1 500 CFA');
-    paymentMeta = { type: 'featured', jobId: jobId };
-  }
-
-  function closePayModal() {
-    document.getElementById('payModal').style.display = 'none';
-  }
-
-  function selectMomo(brand) {
-    activeMomo = brand;
-    document.getElementById('momoMtn').classList.toggle('active', brand === 'mtn');
-    document.getElementById('momoOrange').classList.toggle('active', brand === 'orange');
-  }
-
-  // Render parent catalog lists in form
-  function renderJobCatalogSelects() {
-    const ped = document.getElementById('jobPedagogy').value;
-    const classSelect = document.getElementById('jobClassSelect');
-    const subContainer = document.getElementById('jobSubjectList');
-
-    classSelect.innerHTML = '';
-    subContainer.innerHTML = '';
-
-    const cat = curriculaCatalog[ped];
-    
-    cat.classes.forEach(c => {
-      const opt = document.createElement('option');
-      opt.value = c.id;
-      opt.textContent = window.currentLang === 'en' ? c.name_en : c.name_fr;
-      classSelect.appendChild(opt);
-    });
-
-    cat.subjects.forEach(s => {
-      const item = document.createElement('label');
-      item.className = 'checkbox-item';
-      item.innerHTML = `<input type="checkbox" name="jobSubjects" value="${s.id}"> ${window.currentLang === 'en' ? s.name_en : s.name_fr}`;
-      subContainer.appendChild(item);
-    });
-  }
-
-  // Handle parent posting a job
-  async function handleJobSubmit(e) {
-    e.preventDefault();
-    const title = document.getElementById('jobTitle').value;
-    const desc = document.getElementById('jobDesc').value;
-    const ped = document.getElementById('jobPedagogy').value;
-    const cl = document.getElementById('jobClassSelect').value;
-    const loc = document.getElementById('jobLocation').value;
-    const phone = document.getElementById('jobPhone').value;
-    const wages = document.getElementById('jobWages').value;
-    const subs = Array.from(document.querySelectorAll('input[name="jobSubjects"]:checked')).map(el => el.value);
-
-    try {
-      const res = await fetch(`${API_URL}/jobs/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          title,
-          description: desc,
-          location: loc,
-          pedagogy: ped,
-          class_level: cl,
-          expected_wages: parseInt(wages),
-          subjects: subs,
-          whatsapp_number: phone
-        })
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message);
-
-      closeJobModal();
-      
-      // Offer parent to feature the job posting
-      const feature = confirm(window.currentLang === 'en' 
-        ? "Do you want to bump/feature your posting for 1,500 CFA so it's placed first?" 
-        : "Voulez-vous mettre en avant votre annonce pour 1 500 CFA afin d'être visible en premier par les tuteurs ?");
-      
-      if (feature) {
-        openFeaturedModal(data.id);
-      } else {
+        if (paymentMeta.type === 'premium') {
+          checkPremiumStatus();
+        }
         loadRecommendations();
+
+      } catch (err) {
+        alert('Payment Error: ' + err.message);
       }
-
-    } catch (err) {
-      alert('Error: ' + err.message);
     }
-  }
 
-  // Handle Mock Mobile Money Payment
-  async function handlePaymentSubmit(e) {
-    e.preventDefault();
-    const phone = document.getElementById('payPhoneNumber').value;
-    
-    // Call the payment simulation route
-    try {
-      const res = await fetch(`${API_URL}/jobs/pay`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          type: paymentMeta.type,
-          jobId: paymentMeta.jobId,
-          phoneNumber: phone
-        })
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message);
-
-      alert(data.message);
-      closePayModal();
-      
-      if (paymentMeta.type === 'premium') {
-        checkPremiumStatus();
-      }
-      loadRecommendations();
-
-    } catch (err) {
-      alert('Payment Error: ' + err.message);
-    }
-  }
-
-  // Load recommendations on init
-  loadRecommendations();
-</script>
+    // Load recommendations on init
+    loadRecommendations();
+  </script>
 </body>
+
 </html>

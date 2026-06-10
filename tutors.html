@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SchoolBridge — Nos Répétiteurs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0F6A3B;
+      --primary-hover: #17834C;
+      --secondary: #FCD116;
+      --danger: #E01A22;
+      --bg: #F9F9FB;
+      --text: #1E293B;
+      --muted: #64748B;
+      --card: #FFFFFF;
+      --border: #E2E8F0;
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.02);
+      --shadow-md: 0 4px 20px rgba(0,0,0,0.05);
+      --shadow-lg: 0 10px 35px rgba(15, 106, 59, 0.05);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Navbar */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 5vw;
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-weight: 800;
+      font-size: 1.4rem;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .logo span {
+      color: var(--primary);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .lang-select {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.4rem 0.8rem;
+      font-family: inherit;
+      font-size: 0.85rem;
+      cursor: pointer;
+      outline: none;
+    }
+
+    /* Header section */
+    .tutors-header {
+      text-align: center;
+      padding: 3.5rem 5vw;
+      background: linear-gradient(135deg, rgba(15, 106, 59, 0.04) 0%, rgba(252, 209, 22, 0.04) 100%);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tutors-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .tutors-sub {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    /* Main Container */
+    .directory-layout {
+      max-width: 1200px;
+      margin: 2rem auto 5rem;
+      width: 90%;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2rem;
+    }
+
+    /* Sidebar Filters */
+    .filters-sidebar {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.8rem;
+      height: fit-content;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .filter-section {
+      margin-bottom: 1.8rem;
+    }
+
+    .filter-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .filter-title {
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.8rem;
+    }
+
+    .filter-select {
+      width: 100%;
+      padding: 0.65rem 0.8rem;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+      font-family: inherit;
+      font-size: 0.85rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .filter-select:focus {
+      border-color: var(--primary);
+    }
+
+    /* Tutors Grid */
+    .tutors-feed {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .tutor-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.8rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .tutor-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .tutor-card.premium {
+      border-color: var(--secondary);
+      background: linear-gradient(to bottom, #FFFDF2 0%, #FFFFFF 100%);
+    }
+
+    .premium-label {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+
+    .card-meta {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    .card-bio {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .tag {
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      background: rgba(15, 106, 59, 0.08);
+      color: var(--primary);
+    }
+
+    .tag.pedagogy {
+      background: rgba(252, 209, 22, 0.15);
+      color: #9a7800;
+    }
+
+    .card-footer {
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .rate-text {
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .rate-text span {
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.2rem;
+      border-radius: 100px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1.5px solid var(--border);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .text-muted {
+      color: var(--muted);
+    }
+
+    .text-danger {
+      color: var(--danger);
+    }
+
+    @media (max-width: 768px) {
+      .directory-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">School<span>Bridge</span></a>
+  <div class="nav-right">
+    <select id="langSwitch" class="lang-select" title="Change Language" aria-label="Change Language">
+      <option value="fr">🇫🇷 FR</option>
+      <option value="en">🇺🇸 EN</option>
+    </select>
+    <a href="inscription.html" class="btn btn-ghost" id="navLoginBtn" data-i18n="nav.login">Se connecter</a>
+    <a href="inscription.html" class="btn btn-primary" id="navSignupBtn" data-i18n="nav.signup">S'inscrire</a>
+  </div>
+</nav>
+
+<header class="tutors-header">
+  <h1 class="tutors-title" data-i18n="nav.tutors">Nos Répétiteurs</h1>
+  <p class="tutors-sub" data-i18n="hero.sub">Comparez les profils de nos enseignants certifiés et contactez-les en toute confiance.</p>
+</header>
+
+<div class="directory-layout">
+  <aside class="filters-sidebar">
+    <div class="filter-section">
+      <div class="filter-title" data-i18n="form.pedagogyLabel">Système Pédagogique</div>
+      <select id="pedagogyFilter" class="filter-select" onchange="applyFilters()">
+        <option value="all" data-i18n="form.pedagogyBoth">Les deux</option>
+        <option value="francophone" data-i18n="form.pedagogyFr">Francophone</option>
+        <option value="anglophone" data-i18n="form.pedagogyEn">Anglophone</option>
+      </select>
+    </div>
+
+    <div class="filter-section">
+      <div class="filter-title" data-i18n="form.city">Ville</div>
+      <select id="cityFilter" class="filter-select" onchange="applyFilters()">
+        <option value="all" data-i18n="form.cityPlaceholder">Choisir une ville</option>
+        <option>Yaoundé</option>
+        <option>Douala</option>
+        <option>Bafoussam</option>
+        <option>Bamenda</option>
+      </select>
+    </div>
+  </aside>
+
+  <main>
+    <div class="tutors-feed" id="tutorsFeed">
+      <p class="text-muted">Chargement des tuteurs...</p>
+    </div>
+  </main>
+</div>
+
+<script src="i18n.js"></script>
+<script src="curricula.js"></script>
+<script>
+  const API_URL = 'http://localhost:5000/api';
+  let allTutors = [];
+
+  // Update navigation buttons if user is logged in
+  const token = localStorage.getItem('token');
+  if (token) {
+    document.getElementById('navLoginBtn').textContent = window.currentLang === 'en' ? 'My Account' : 'Mon compte';
+    document.getElementById('navLoginBtn').href = 'dashboard.html';
+    document.getElementById('navSignupBtn').style.display = 'none';
+  }
+
+  async function fetchTutors() {
+    try {
+      const res = await fetch(`${API_URL}/profiles/`);
+      allTutors = await res.json();
+      applyFilters();
+    } catch (err) {
+      console.error(err);
+      document.getElementById('tutorsFeed').innerHTML = `<p class="text-danger">Erreur lors du chargement des profils.</p>`;
+    }
+  }
+
+  async function applyFilters() {
+    const ped = document.getElementById('pedagogyFilter').value;
+    const city = document.getElementById('cityFilter').value;
+
+    const filtered = allTutors.filter(t => {
+      if (ped !== 'all' && t.pedagogy !== 'both' && t.pedagogy !== ped) return false;
+      if (city !== 'all' && t.city && t.city !== city) return false;
+      return true;
+    });
+
+    // Sort: premium first
+    filtered.sort((a, b) => (b.is_premium ? 1 : 0) - (a.is_premium ? 1 : 0));
+
+    const feed = document.getElementById('tutorsFeed');
+    feed.innerHTML = '';
+
+    if (filtered.length === 0) {
+      feed.innerHTML = `<p class="text-muted">Aucun tuteur ne correspond à ces critères.</p>`;
+      return;
+    }
+
+    for (let t of filtered) {
+      const card = document.createElement('div');
+      card.className = `tutor-card ${t.is_premium ? 'premium' : ''}`;
+      
+      const isPremium = t.is_premium;
+
+      card.innerHTML = `
+        ${isPremium ? `<span class="premium-label">⭐ Premium Tutor</span>` : ''}
+        <div>
+          <h3 class="card-title">${t.full_name || 'Enseignant Qualifié'}</h3>
+          <div class="card-meta">📍 ${t.city || 'Yaoundé'} · Expérience: ${t.experience_years || 1} ans</div>
+          <p class="card-bio" data-translate-dynamic data-original-text="${t.bio || ''}">${t.bio || ''}</p>
+          <div class="card-tags">
+            <span class="tag pedagogy">${t.pedagogy === 'both' ? 'FR + EN' : t.pedagogy}</span>
+            ${(t.subjects || []).slice(0, 3).map(s => `<span class="tag">${window.getCurriculumName(s, t.pedagogy === 'both' ? 'francophone' : t.pedagogy, window.currentLang)}</span>`).join('')}
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="rate-text">Tarif: <span>${t.hourly_rate || 3000} CFA/h</span></div>
+          <button type="button" class="btn btn-primary" onclick="contactTutor('${t.whatsapp_number || ''}', ${isPremium})">Contacter</button>
+        </div>
+      `;
+
+      feed.appendChild(card);
+    }
+
+    await window.updateLanguage();
+  }
+
+  function contactTutor(whatsapp, isPremium) {
+    if (isPremium) {
+      window.open(`https://wa.me/${whatsapp}`, '_blank');
+    } else {
+      alert(window.currentLang === 'en'
+        ? "Please sign up or log in to obtain direct WhatsApp links for basic tutors."
+        : "Veuillez vous inscrire ou vous connecter pour accéder aux liens WhatsApp directs des tuteurs standards.");
+    }
+  }
+
+  // Load on init
+  fetchTutors();
+</script>
+</body>
+</html>

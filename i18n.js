@@ -122,12 +122,21 @@ const translations = {
     "dash.recsTitleTutor": "Recommandations : Cours d'élèves correspondants",
     "dash.recsTitleParent": "Recommandations : Répétiteurs recommandés pour vous",
     "dash.noRecs": "Aucune recommandation disponible pour le moment. Veuillez mettre à jour vos matières ou publier un besoin.",
+    "dash.noRecsYet": "Aucune recommandation pour l'instant",
     "dash.postJob": "Publier un nouveau besoin",
     "dash.premiumBtn": "Devenir Premium (3 000 CFA)",
     "dash.premiumActive": "⭐ Statut Premium Activé",
     "dash.bumpBtn": "Mettre en avant",
     "dash.hired": "Recruter",
-    "dash.hiredSuccess": "Félicitations! Vous avez recruté ce répétiteur. Son WhatsApp est disponible."
+    "dash.hiredSuccess": "Félicitations! Vous avez recruté ce répétiteur. Son WhatsApp est disponible.",
+    
+    // Reminders
+    "premium.reminder.title": "Pourquoi passer au statut Premium ? 🚀",
+    "premium.reminder.desc": "Augmentez vos chances d'être recruté par des familles au Cameroun !",
+    "premium.reminder.item1": "Placement prioritaire en tête de liste des parents",
+    "premium.reminder.item2": "Badge de confiance visible avec étoile dorée",
+    "premium.reminder.item3": "Accès direct au bouton WhatsApp pour les parents",
+    "premium.reminder.item4": "Alertes instantanées par courriel pour les nouveaux besoins"
   },
   en: {
     // Navigation
@@ -213,7 +222,7 @@ const translations = {
     "form.photoSize": "JPG, PNG — Max 2 MB",
     "form.firstName": "First Name",
     "form.lastName": "Last Name",
-    "form.phone": "Phone",
+    "form.phone": "Phone Number",
     "form.whatsapp": "WhatsApp Number",
     "form.city": "City",
     "form.cityPlaceholder": "Choose a city",
@@ -252,35 +261,79 @@ const translations = {
     "dash.recsTitleTutor": "Recommendations: Matching Student Job Demands",
     "dash.recsTitleParent": "Recommendations: Recommended Tutors for You",
     "dash.noRecs": "No recommendations available at the moment. Please update your subjects or post a job requirement.",
+    "dash.noRecsYet": "no recommendation yet",
     "dash.postJob": "Post a New Requirement",
     "dash.premiumBtn": "Go Premium (3,000 CFA)",
     "dash.premiumActive": "⭐ Premium Status Active",
     "dash.bumpBtn": "Bump Posting",
     "dash.hired": "Hire",
-    "dash.hiredSuccess": "Congratulations! You have hired this tutor. Their WhatsApp is now open."
+    "dash.hiredSuccess": "Congratulations! You have hired this tutor. Their WhatsApp is now open.",
+    
+    // Reminders
+    "premium.reminder.title": "Why Upgrade to Premium? 🚀",
+    "premium.reminder.desc": "Boost your chances of getting hired by families in Cameroon!",
+    "premium.reminder.item1": "Priority placement at the top of parent recommendation feeds",
+    "premium.reminder.item2": "Trusted premium educator badge with gold star",
+    "premium.reminder.item3": "Direct WhatsApp contact button open to parents",
+    "premium.reminder.item4": "Instant email alerts for new matching student needs"
   }
 };
 
 window.currentLang = localStorage.getItem('schoolbridge_lang') || 'fr';
 
-window.updateLanguage = function(lang) {
+// Free Google Translate API integration for dynamic biographies / descriptions
+window.translateText = async function(text, targetLang) {
+  if (!text || text.trim() === '') return text;
+  try {
+    const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    if (data && data[0]) {
+      return data[0].map(s => s[0]).join('');
+    }
+  } catch (err) {
+    console.error("Translation API error: ", err);
+  }
+  return text;
+};
+
+window.updateLanguage = async function(lang) {
   if (lang) {
     window.currentLang = lang;
     localStorage.setItem('schoolbridge_lang', lang);
   }
   const dict = translations[window.currentLang] || translations.fr;
+  
+  // Translate standard text fields
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
     if (dict[key]) {
-      if (el.tagName === 'INPUT' && (el.type === 'text' || el.type === 'email' || el.type === 'password' || el.type === 'tel')) {
-        el.placeholder = dict[key];
-      } else if (el.tagName === 'TEXTAREA') {
-        el.placeholder = dict[key];
-      } else {
-        el.innerHTML = dict[key];
-      }
+      el.innerHTML = dict[key];
     }
   });
+
+  // Translate inputs and placeholder attributes
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (dict[key]) {
+      el.placeholder = dict[key];
+    }
+  });
+
+  // Automatically translate all dynamic biographies/descriptions in recommendation cards
+  const textCards = document.querySelectorAll('[data-translate-dynamic]');
+  for (let el of textCards) {
+    const originalText = el.getAttribute('data-original-text') || el.innerText;
+    if (!el.getAttribute('data-original-text')) {
+      el.setAttribute('data-original-text', originalText);
+    }
+    if (window.currentLang === 'en') {
+      const translated = await window.translateText(originalText, 'en');
+      el.innerText = translated;
+    } else {
+      el.innerText = originalText;
+    }
+  }
 
   const langSwitch = document.getElementById('langSwitch');
   if (langSwitch) {
@@ -294,6 +347,10 @@ document.addEventListener('DOMContentLoaded', () => {
   if (langSwitch) {
     langSwitch.addEventListener('change', (e) => {
       window.updateLanguage(e.target.value);
+      // Trigger card updates if they exist
+      if (typeof window.loadRecommendations === 'function') {
+        window.loadRecommendations();
+      }
     });
   }
 });

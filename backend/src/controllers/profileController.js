@@ -26,7 +26,7 @@ exports.getProfileById = async (req, res) => {
 };
 
 exports.updateProfile = async (req, res) => {
-    const { full_name, bio, pedagogy, classes, subjects, experience_years, hourly_rate, whatsapp_number } = req.body;
+    const { full_name, bio, pedagogy, classes, subjects, experience_years, hourly_rate, whatsapp_number, city } = req.body;
     try {
         let profile = await Profile.findOne({ where: { user_id: req.user.id } });
         
@@ -38,7 +38,8 @@ exports.updateProfile = async (req, res) => {
             subjects: subjects || [],
             experience_years: experience_years || 0,
             hourly_rate: hourly_rate || 0,
-            whatsapp_number
+            whatsapp_number,
+            city: city || 'Yaoundé'
         };
 
         if (profile) {

@@ -397,6 +397,38 @@
     }
 
     /* Navigation buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.6rem;
+      border-radius: 100px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.22s ease-in-out;
+      font-family: inherit;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1.5px solid var(--border);
+    }
+    .btn-ghost:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
     .wizard-actions {
       display: flex;
       justify-content: space-between;
@@ -436,8 +468,8 @@
 <div class="auth-container">
   
   <div class="tab-switcher">
-    <button class="tab-btn active" id="tabSignup" onclick="switchAuthTab('signup')">S'inscrire</button>
-    <button class="tab-btn" id="tabLogin" onclick="switchAuthTab('login')">Se connecter</button>
+    <button type="button" class="tab-btn active" id="tabSignup" onclick="switchAuthTab('signup')">S'inscrire</button>
+    <button type="button" class="tab-btn" id="tabLogin" onclick="switchAuthTab('login')">Se connecter</button>
   </div>
 
   <!-- SIGNUP FLOW -->
@@ -486,21 +518,21 @@
         <div class="form-group">
           <div class="field">
             <label><span data-i18n="form.firstName">Prénom</span><span class="req">*</span></label>
-            <input type="text" id="firstName" required placeholder="Paul">
+            <input type="text" id="firstName" required placeholder="Paul" data-i18n-placeholder="form.firstName">
           </div>
           <div class="field">
             <label><span data-i18n="form.lastName">Nom</span><span class="req">*</span></label>
-            <input type="text" id="lastName" required placeholder="Nkemdirim">
+            <input type="text" id="lastName" required placeholder="Nkemdirim" data-i18n-placeholder="form.lastName">
           </div>
         </div>
         <div class="form-group">
           <div class="field">
             <label><span data-i18n="form.phone">Téléphone</span><span class="req">*</span></label>
-            <input type="tel" id="phoneNumber" required placeholder="6XX XXX XXX">
+            <input type="tel" id="phoneNumber" required placeholder="6XX XXX XXX" data-i18n-placeholder="form.phone">
           </div>
           <div class="field">
             <label><span data-i18n="form.whatsapp">WhatsApp</span></label>
-            <input type="tel" id="whatsappNumber" placeholder="6XX XXX XXX">
+            <input type="tel" id="whatsappNumber" placeholder="6XX XXX XXX" data-i18n-placeholder="form.whatsapp">
           </div>
         </div>
       </div>
@@ -557,7 +589,7 @@
         <div class="form-group full">
           <div class="field">
             <label data-i18n="form.bio">Biographie</label>
-            <textarea id="bio" placeholder="Décrivez votre expérience..."></textarea>
+            <textarea id="bio" placeholder="Décrivez votre expérience..." data-i18n-placeholder="form.bioPlaceholder"></textarea>
           </div>
         </div>
         <div class="form-group full" id="cvUploadContainer">
@@ -578,17 +610,17 @@
         <div class="form-group full">
           <div class="field">
             <label><span data-i18n="form.email">Adresse email</span><span class="req">*</span></label>
-            <input type="email" id="email" required placeholder="votre@email.com">
+            <input type="email" id="email" required placeholder="votre@email.com" data-i18n-placeholder="form.email">
           </div>
         </div>
         <div class="form-group">
           <div class="field">
             <label><span data-i18n="form.pwd">Mot de passe</span><span class="req">*</span></label>
-            <input type="password" id="password" required placeholder="Min 8 caractères">
+            <input type="password" id="password" required placeholder="Min 8 caractères" data-i18n-placeholder="form.pwd">
           </div>
           <div class="field">
             <label><span data-i18n="form.pwdConfirm">Confirmer</span><span class="req">*</span></label>
-            <input type="password" id="passwordConfirm" required placeholder="Min 8 caractères">
+            <input type="password" id="passwordConfirm" required placeholder="Min 8 caractères" data-i18n-placeholder="form.pwdConfirm">
           </div>
         </div>
       </div>
@@ -612,13 +644,13 @@
       <div class="form-group full">
         <div class="field">
           <label data-i18n="form.email">Adresse email</label>
-          <input type="email" id="loginEmail" required placeholder="paul@example.com">
+          <input type="email" id="loginEmail" required placeholder="paul@example.com" data-i18n-placeholder="form.email">
         </div>
       </div>
       <div class="form-group full">
         <div class="field">
           <label data-i18n="form.pwd">Mot de passe</label>
-          <input type="password" id="loginPassword" required placeholder="••••••••">
+          <input type="password" id="loginPassword" required placeholder="••••••••" data-i18n-placeholder="form.pwd">
         </div>
       </div>
       <button type="submit" class="btn btn-primary" style="width:100%;padding:1rem;" data-i18n="nav.login">Se connecter</button>
@@ -824,7 +856,8 @@
             subjects: subjects,
             hourly_rate: parseInt(rate),
             whatsapp_number: whatsapp,
-            experience_years: 1
+            experience_years: 1,
+            city: city
           })
         });
 

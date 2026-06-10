@@ -122,6 +122,12 @@
       background: rgba(15, 106, 59, 0.06);
     }
 
+    .sidebar-version {
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
     /* Content Area */
     .main-content {
       padding: 3rem;
@@ -206,6 +212,14 @@
       font-size: 0.8rem;
     }
 
+    .btn-full {
+      width: 100%;
+    }
+
+    .btn-pad-lg {
+      padding: 1rem;
+    }
+
     /* Recommendation grids */
     .grid-container {
       display: grid;
@@ -260,6 +274,54 @@
       font-weight: 700;
       padding: 0.2rem 0.6rem;
       border-radius: 4px;
+    }
+
+    .premium-status {
+      margin-left: 1rem;
+      font-weight: 700;
+      color: var(--primary);
+      display: none;
+    }
+
+    .premium-alert-box {
+      background: linear-gradient(135deg, rgba(252, 209, 22, 0.12) 0%, rgba(15, 106, 59, 0.04) 100%);
+      border: 1.5px solid var(--secondary);
+      border-radius: 16px;
+      padding: 1.8rem;
+      margin-bottom: 2.5rem;
+      display: none;
+    }
+
+    .premium-alert-box h3 {
+      color: #7d5e00;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.15rem;
+    }
+
+    .premium-alert-box p {
+      font-size: 0.9rem;
+      color: var(--text);
+      margin-bottom: 1.2rem;
+      font-weight: 500;
+    }
+
+    .premium-alert-box ul {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+      list-style-position: inside;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+    }
+
+    .recs-header {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      margin-bottom: 1.5rem;
     }
 
     .rec-title {
@@ -358,6 +420,10 @@
       margin-bottom: 1.2rem;
     }
 
+    .form-field textarea {
+      min-height: 60px;
+    }
+
     .checkbox-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -404,6 +470,22 @@
       height: auto;
     }
 
+    .pay-modal-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .momo-option-mtn {
+      font-weight: 800;
+      color: #FCD116;
+    }
+
+    .momo-option-orange {
+      font-weight: 800;
+      color: #E01A22;
+    }
+
     @media (max-width: 800px) {
       .dashboard-layout {
         grid-template-columns: 1fr;
@@ -426,7 +508,7 @@
       <option value="fr">🇫🇷 FR</option>
       <option value="en">🇺🇸 EN</option>
     </select>
-    <button class="btn btn-danger btn-sm" onclick="logout()" data-i18n="nav.logout">Déconnexion</button>
+    <button type="button" class="btn btn-danger btn-sm" onclick="logout()" data-i18n="nav.logout">Déconnexion</button>
   </div>
 </nav>
 
@@ -447,7 +529,7 @@
         <span data-i18n="dash.premiumBtn">Go Premium</span>
       </div>
     </div>
-    <div style="font-size:0.75rem; color:var(--muted); text-align:center;">
+    <div class="sidebar-version">
       SchoolBridge Dashboard v2.0
     </div>
   </aside>
@@ -459,7 +541,7 @@
         <h1 class="welcome-title"><span data-i18n="dash.welcome">Bienvenue,</span> <span id="usernameVal">Utilisateur</span>!</h1>
         <div class="welcome-sub">
           <span data-i18n="dash.role">Rôle</span>: <strong id="roleVal" data-i18n="dash.tutor">Répétiteur</strong>
-          <span id="premiumStatus" style="margin-left: 1rem; font-weight:700; color:var(--primary); display:none;" data-i18n="dash.premiumActive">⭐ Premium Active</span>
+          <span id="premiumStatus" class="premium-status" data-i18n="dash.premiumActive">⭐ Premium Active</span>
         </div>
       </div>
 
@@ -468,9 +550,22 @@
       </div>
     </div>
 
+    <!-- Premium Reminder Alert Box -->
+    <div id="premiumAlertBox" class="premium-alert-box">
+      <h3 data-i18n="premium.reminder.title">Why Upgrade to Premium? 🚀</h3>
+      <p data-i18n="premium.reminder.desc">Boost your chances of getting hired by families in Cameroon!</p>
+      <ul>
+        <li data-i18n="premium.reminder.item1">Priority placement at the top of parent recommendation feeds</li>
+        <li data-i18n="premium.reminder.item2">Trusted premium educator badge with gold star</li>
+        <li data-i18n="premium.reminder.item3">Direct WhatsApp contact button open to parents</li>
+        <li data-i18n="premium.reminder.item4">Instant email alerts for new matching student needs</li>
+      </ul>
+      <button type="button" class="btn btn-secondary btn-sm" onclick="openPremiumModal()" data-i18n="dash.premiumBtn">Go Premium (3,000 CFA)</button>
+    </div>
+
     <!-- Recommendations Feed -->
     <div>
-      <h2 id="recsHeader" style="font-family:'Playfair Display',serif; font-size:1.4rem; margin-bottom:1.5rem;" data-i18n="dash.recsTitleTutor">Recommendations de cours</h2>
+      <h2 id="recsHeader" class="recs-header" data-i18n="dash.recsTitleTutor">Recommendations de cours</h2>
       <div class="grid-container" id="recsFeed">
         <p data-i18n="dash.noRecs">Chargement...</p>
       </div>
@@ -490,7 +585,7 @@
       </div>
       <div class="form-field">
         <label>Description des besoins</label>
-        <textarea id="jobDesc" placeholder="Besoin de suivi intensif..." style="min-height:60px;"></textarea>
+        <textarea id="jobDesc" placeholder="Besoin de suivi intensif..."></textarea>
       </div>
       <div class="form-field">
         <label>Pédagogie</label>
@@ -519,7 +614,7 @@
         <label>Wages attendus / Budget Mensuel (CFA)</label>
         <input type="number" id="jobWages" required value="40000">
       </div>
-      <button type="submit" class="btn btn-primary" style="width:100%;" data-i18n="dash.postJob">Publier le besoin</button>
+      <button type="submit" class="btn btn-primary btn-full" data-i18n="dash.postJob">Publier le besoin</button>
     </form>
   </div>
 </div>
@@ -529,14 +624,14 @@
   <div class="modal-box">
     <span class="modal-close" onclick="closePayModal()">&times;</span>
     <h3 class="modal-title" id="payModalTitle">Simuler le Paiement</h3>
-    <p id="payModalDesc" style="font-size:0.9rem; color:var(--muted); margin-bottom:1.5rem;">Frais de transaction requis</p>
+    <p id="payModalDesc" class="pay-modal-desc">Frais de transaction requis</p>
     
     <div class="momo-brand">
       <div class="momo-option active" id="momoMtn" onclick="selectMomo('mtn')">
-        <div style="font-weight:800;color:#FCD116;">MTN MoMo</div>
+        <div class="momo-option-mtn">MTN MoMo</div>
       </div>
       <div class="momo-option" id="momoOrange" onclick="selectMomo('orange')">
-        <div style="font-weight:800;color:#E01A22;">Orange</div>
+        <div class="momo-option-orange">Orange</div>
       </div>
     </div>
 
@@ -545,7 +640,7 @@
         <label>Numéro Mobile Money (MTN/Orange)</label>
         <input type="tel" id="payPhoneNumber" required placeholder="6XX XXX XXX">
       </div>
-      <button type="submit" class="btn btn-secondary" style="width:100%;padding:1rem;">Confirmer le Paiement (CFA)</button>
+      <button type="submit" class="btn btn-secondary btn-full btn-pad-lg">Confirmer le Paiement (CFA)</button>
     </form>
   </div>
 </div>
@@ -575,13 +670,13 @@
     document.getElementById('sidebarPostMenu').style.display = 'flex';
     document.getElementById('recsHeader').setAttribute('data-i18n', 'dash.recsTitleParent');
     document.getElementById('actionBtnArea').innerHTML = `
-      <button class="btn btn-primary" onclick="openJobModal()" data-i18n="dash.postJob">Publier un besoin</button>
+      <button type="button" class="btn btn-primary" onclick="openJobModal()" data-i18n="dash.postJob">Publier un besoin</button>
     `;
   } else {
     document.getElementById('sidebarPremiumMenu').style.display = 'flex';
     document.getElementById('recsHeader').setAttribute('data-i18n', 'dash.recsTitleTutor');
     document.getElementById('actionBtnArea').innerHTML = `
-      <button class="btn btn-secondary" id="premiumBtnHeader" onclick="openPremiumModal()" data-i18n="dash.premiumBtn">Devenir Premium (3 000 CFA)</button>
+      <button type="button" class="btn btn-secondary" id="premiumBtnHeader" onclick="openPremiumModal()" data-i18n="dash.premiumBtn">Devenir Premium (3 000 CFA)</button>
     `;
     checkPremiumStatus();
   }
@@ -597,6 +692,9 @@
         document.getElementById('premiumStatus').style.display = 'inline-block';
         const pBtn = document.getElementById('premiumBtnHeader');
         if (pBtn) pBtn.style.display = 'none';
+        document.getElementById('premiumAlertBox').style.display = 'none';
+      } else {
+        document.getElementById('premiumAlertBox').style.display = 'block';
       }
     } catch (e) {
       console.log("Error checking premium status: ", e);
@@ -625,12 +723,13 @@
       feed.innerHTML = '';
 
       if (!res.ok) {
-        feed.innerHTML = `<p style="color:var(--danger)">Failed to load recommendations: ${data.message}</p>`;
+        feed.innerHTML = `<p style="color:var(--text)" data-i18n="dash.noRecsYet">no recommendation yet</p>`;
+        window.updateLanguage();
         return;
       }
 
       if (!data || data.length === 0) {
-        feed.innerHTML = `<p data-i18n="dash.noRecs">Aucune recommandation disponible pour le moment. Veuillez mettre à jour vos compétences.</p>`;
+        feed.innerHTML = `<p style="color:var(--text)" data-i18n="dash.noRecsYet">no recommendation yet</p>`;
         window.updateLanguage();
         return;
       }
@@ -646,7 +745,7 @@
             <div>
               <h3 class="rec-title">${item.title}</h3>
               <p class="rec-location">📍 ${item.location}</p>
-              <p style="font-size:0.85rem; color:var(--muted);">${item.description || ''}</p>
+              <p style="font-size:0.85rem; color:var(--muted);" data-translate-dynamic data-original-text="${item.description || ''}">${item.description || ''}</p>
               <div class="rec-tags">
                 <span class="tag pedagogy">${window.getCurriculumName(item.class_level, item.pedagogy, window.currentLang)}</span>
                 ${(item.subjects || []).map(s => `<span class="tag">${window.getCurriculumName(s, item.pedagogy, window.currentLang)}</span>`).join('')}
@@ -666,8 +765,8 @@
             ${isTutorPremium ? `<span class="premium-label">⭐ Premium Tutor</span>` : ''}
             <div>
               <h3 class="rec-title">${item.full_name || 'Enseignant Qualifié'}</h3>
-              <p class="rec-location">📍 Expérience: ${item.experience_years || 1} ans</p>
-              <p style="font-size:0.85rem; color:var(--muted);">${item.bio || ''}</p>
+              <p class="rec-location">📍 ${item.city || 'Yaoundé'} · Expérience: ${item.experience_years || 1} ans</p>
+              <p style="font-size:0.85rem; color:var(--muted);" data-translate-dynamic data-original-text="${item.bio || ''}">${item.bio || ''}</p>
               <div class="rec-tags">
                 <span class="tag pedagogy">${item.pedagogy === 'both' ? 'FR + EN' : item.pedagogy}</span>
                 ${(item.subjects || []).map(s => `<span class="tag">${window.getCurriculumName(s, item.pedagogy === 'both' ? 'francophone' : item.pedagogy, window.currentLang)}</span>`).join('')}
@@ -676,7 +775,7 @@
             <div class="rec-meta">
               <div style="display:flex; justify-content:space-between; align-items:center;">
                 <div>Tarif: <span>${item.hourly_rate} CFA/heure</span></div>
-                <button class="btn btn-primary btn-sm" onclick="hireTutor('${item.whatsapp_number || ''}', ${isTutorPremium})">Recruter</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="hireTutor('${item.whatsapp_number || ''}', ${isTutorPremium})">Recruter</button>
               </div>
             </div>
           `;
@@ -684,6 +783,8 @@
 
         feed.appendChild(card);
       });
+
+      await window.updateLanguage();
 
     } catch (err) {
       console.error(err);

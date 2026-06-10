@@ -76,7 +76,8 @@ async function seed() {
             hourly_rate: 4000,
             whatsapp_number: '237699999999',
             is_approved: true,
-            is_premium: true
+            is_premium: true,
+            city: 'Douala'
         });
 
         await Profile.create({
@@ -90,7 +91,8 @@ async function seed() {
             hourly_rate: 5000,
             whatsapp_number: '237688888888',
             is_approved: true,
-            is_premium: false
+            is_premium: false,
+            city: 'Yaoundé'
         });
 
         await Profile.create({
@@ -104,7 +106,8 @@ async function seed() {
             hourly_rate: 3500,
             whatsapp_number: '237677777777',
             is_approved: true,
-            is_premium: true
+            is_premium: true,
+            city: 'Bafoussam'
         });
 
         console.log('📝 Created Profiles.');
